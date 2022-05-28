@@ -57,7 +57,7 @@ public static class Lua
 	public delegate int lua_Writer(IntPtr L, IntPtr p, ulong sz, IntPtr ud);
 	public delegate IntPtr lua_Reader(IntPtr L, IntPtr ud, ref ulong sz);
 	public delegate IntPtr lua_Alloc(IntPtr ud, IntPtr ptr, ulong osize, ulong nsize);
-	public delegate void lua_Hook(IntPtr L, IntPtr ar);
+	public delegate void lua_Hook(IntPtr L, lua_Debug ar);
 	
 	////
 	
@@ -99,6 +99,11 @@ public static class Lua
 	public static readonly int LUA_IDSIZE = 60;
 	
 	public static readonly int LUAL_BUFFERSIZE = 512 > 16384 ? 8182 : 512;
+	
+	public static void lua_assert(bool c)
+	{
+		Debug.Assert(c);
+	}
 	
 	////
 	
