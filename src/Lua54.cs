@@ -3,7 +3,7 @@ namespace Lua54;
 using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-	
+
 
 public static class Lua
 {
@@ -155,10 +155,10 @@ public static class Lua
 	public delegate int lua_CFunction(IntPtr L);
 	public delegate int lua_KFunction(IntPtr L, int status, IntPtr ctx);
 	public delegate void lua_WarnFunction(IntPtr ud, string msg, int tocont);
-	public delegate int lua_Writer(IntPtr L, IntPtr p, ulong sz, IntPtr ud);
+	public delegate int lua_Writer(IntPtr L, IntPtr p, ulong sz, ref ulong ud);
 	public delegate IntPtr lua_Reader(IntPtr L, IntPtr ud, ulong sz);
 	public delegate IntPtr lua_Alloc(IntPtr ud, IntPtr ptr, ulong osize, ulong nsize);
-	public delegate void lua_Hook(IntPtr L, IntPtr ar);
+	public delegate void lua_Hook(IntPtr L, lua_Debug ar);
 	
 	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
 	public static extern IntPtr lua_newstate(lua_Alloc f, IntPtr ud);
@@ -495,7 +495,7 @@ public static class Lua
 	public static extern int lua_getstack(IntPtr L, int level, lua_Debug ar);
 	
 	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
-	public static extern int lua_getinfo(IntPtr L, string what, ref lua_Debug ar);
+	public static extern int lua_getinfo(IntPtr L, string what, lua_Debug ar);
 	
 	[DllImport(DllName, CallingConvention = CallingConvention.StdCall, EntryPoint = "lua_getlocal")]
 	public static extern IntPtr _lua_getlocal(IntPtr L, lua_Debug ar, int n);
@@ -728,17 +728,17 @@ public static class Lua
 	public static extern int luaL_typeerror(IntPtr L, int arg, string tname);
 	
 	[DllImport(DllName, CallingConvention = CallingConvention.StdCall, EntryPoint = "luaL_checklstring")]
-	public static extern IntPtr _luaL_checklstring(IntPtr L, int arg, IntPtr l);
-	public static string? luaL_checklstring(IntPtr L, int arg, IntPtr l)
+	public static extern IntPtr _luaL_checklstring(IntPtr L, int arg, ref ulong l);
+	public static string? luaL_checklstring(IntPtr L, int arg, ref ulong l)
 	{
-		return Marshal.PtrToStringAnsi(_luaL_checklstring(L, arg, l));
+		return Marshal.PtrToStringAnsi(_luaL_checklstring(L, arg, ref l));
 	}
 	
 	[DllImport(DllName, CallingConvention = CallingConvention.StdCall, EntryPoint = "luaL_optlstring")]
-	public static extern IntPtr _luaL_optlstring(IntPtr L, int arg, string def, IntPtr l);
-	public static string? luaL_optlstring(IntPtr L, int arg, string def, IntPtr l)
+	public static extern IntPtr _luaL_optlstring(IntPtr L, int arg, string def, ref ulong l);
+	public static string? luaL_optlstring(IntPtr L, int arg, string def, ref ulong l)
 	{
-		return Marshal.PtrToStringAnsi(_luaL_optlstring(L, arg, def, l));
+		return Marshal.PtrToStringAnsi(_luaL_optlstring(L, arg, def, ref l));
 	}
 	
 	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
@@ -820,7 +820,7 @@ public static class Lua
 	public static extern long luaL_len(IntPtr L, int idx);
 	
 	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
-	public static extern void luaL_addgsub(IntPtr b, string s, string p, string r);
+	public static extern void luaL_addgsub(luaL_Buffer b, string s, string p, string r);
 	
 	[DllImport(DllName, CallingConvention = CallingConvention.StdCall, EntryPoint = "luaL_gsub")]
 	public static extern IntPtr _luaL_gsub(IntPtr L, string s, string p, string r);
@@ -843,7 +843,7 @@ public static class Lua
 	
 	public static void luaL_newlibtable(IntPtr L, luaL_Reg[] l)
 	{
-		lua_createtable(L, 0, l.Length);
+		lua_createtable(L, 0, l.Length - 1);
 	}
 	
 	public static void luaL_newlib(IntPtr L, luaL_Reg[] l)
@@ -867,12 +867,14 @@ public static class Lua
 	
 	public static string? luaL_checkstring(IntPtr L, int n)
 	{
-		return luaL_checklstring(L, n, IntPtr.Zero);
+		ulong temp = 0; // NOP
+		return luaL_checklstring(L, n, ref temp);
 	}
 	
 	public static string? luaL_optstring(IntPtr L, int n, string d)
 	{
-		return luaL_optlstring(L, n, d, IntPtr.Zero);
+		ulong temp = 0; // NOP
+		return luaL_optlstring(L, n, d, ref temp);
 	}
 	
 	public static string? luaL_typename(IntPtr L, int i)
@@ -945,14 +947,14 @@ public static class Lua
 		B.init[B.n++] = c;
 	}
 	
-	public static void luaL_addsize(luaL_Buffer B, ulong s)
+	public static void luaL_addsize(luaL_Buffer B, long s)
 	{
-		B.n += s;
+		B.n = (ulong) ((long) B.n + s);
 	}
 	
-	public static void luaL_buffsub(luaL_Buffer B, ulong s)
+	public static void luaL_buffsub(luaL_Buffer B, long s)
 	{
-		B.n -= s;
+		B.n = (ulong) ((long) B.n - s);
 	}
 	
 	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
@@ -980,12 +982,8 @@ public static class Lua
 	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
 	public static extern void luaL_pushresultsize(IntPtr B, ulong sz);
 	
-	[DllImport(DllName, CallingConvention = CallingConvention.StdCall, EntryPoint = "luaL_buffinitsize")]
-	public static extern IntPtr _luaL_buffinitsize(IntPtr L, IntPtr B, ulong sz);
-	public static string? luaL_buffinitsize(IntPtr L, IntPtr B, ulong sz)
-	{
-		return Marshal.PtrToStringAnsi(_luaL_buffinitsize(L, B, sz));
-	}
+	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
+	public static extern IntPtr luaL_buffinitsize(IntPtr L, IntPtr B, ulong sz);
 	
 	public static void lua_writestring(string s)
 	{
