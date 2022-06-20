@@ -7,7 +7,12 @@ dotnet add package Lua.NET --version 1.0.0
 
 Supports Lua5.4 Lua5.3 and LuaJIT
 
-Hardcoded to only use doubles and 64-bit integers, so the Lua library will have to be built accordingly. This CAN be changed with manual edits, but it wasn't fun writing this library. This code was made with with the default includes on a 64-bit windows 10 machine using Lua's makefile and LuaJIT. All DLL's are built differently, so you will have to edit the name of the DLL inside of the respected cs file to the name of your DLL; will make it easier in the future.
+Hardcoded to only use doubles and 64-bit integers, so the Lua library will have to be built accordingly. This CAN be changed with manual edits, but it wasn't fun writing this library. This code was made with with the default includes on a 64-bit windows 10 machine using Lua's makefile and LuaJIT. All DLL's are named differently, make sure the name of the Lua dll matches that of the .cs file; will make it easier in the future.
+```
+Lua5.4 - lua544.dll
+Lua5.3 - lua536.dll
+LuaJIT - lua51.dll
+```
 
 Example Usage Lua5.4.4:
 ```C#
