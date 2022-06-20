@@ -1,6 +1,10 @@
 # Lua.NET
 C# .NET Core 6.0 Lua bindings and helper functions.
 
+```
+dotnet add package Lua.NET --version 1.0.0
+```
+
 Supports Lua5.4 Lua5.3 and LuaJIT
 
 Hardcoded to only use doubles and 64-bit integers, so the Lua library will have to be built accordingly. This CAN be changed with manual edits, but it wasn't fun writing this library. This code was made with with the default includes on a 64-bit windows 10 machine using Lua's makefile and LuaJIT. All DLL's are built differently, so you will have to edit the name of the DLL inside of the respected cs file to the name of your DLL; will make it easier in the future.
