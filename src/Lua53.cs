@@ -1,14 +1,15 @@
-namespace Lua54;
+namespace Lua53;
 
 using System;
-using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 
 public static class Lua
 {
 	
-	private const string DllName = "Lua544.dll";
+	private const string DllName = "Lua536.dll";
+	
+	public static readonly int LUA_BITSINT = 32;
 	
 	public static readonly int LUA_INT_INT = 1;
 	public static readonly int LUA_INT_LONG = 2;
@@ -18,13 +19,11 @@ public static class Lua
 	public static readonly int LUA_FLOAT_DOUBLE = 2;
 	public static readonly int LUA_FLOAT_LONGDOUBLE = 3;
 	
-	public static readonly int LUA_INT_DEFAULT = LUA_INT_LONGLONG;
-	public static readonly int LUA_FLOAT_DEFAULT = LUA_FLOAT_DOUBLE;
-	
-	public static readonly int LUA_32BITS = 0;
-	
 	public static readonly int LUA_INT_TYPE = LUA_INT_DEFAULT;
 	public static readonly int LUA_FLOAT_TYPE = LUA_FLOAT_DEFAULT;
+	
+	public static readonly int LUA_INT_DEFAULT = LUA_INT_LONGLONG;
+	public static readonly int LUA_FLOAT_DEFAULT = LUA_FLOAT_DOUBLE;
 	
 	public static readonly string LUA_PATH_SEP = ";";
 	public static readonly string LUA_PATH_MARK = "?";
@@ -40,6 +39,14 @@ public static class Lua
 	public static readonly string LUA_CPATH_DEFAULT = LUA_CDIR + "?.dll;" + LUA_CDIR + "..\\lib\\lua\\" + LUA_VDIR + "\\?.dll;" + LUA_CDIR + "loadall.dll;" + ".\\?.dll";
 	
 	public static readonly string LUA_DIRSEP = "\\";
+	
+	public static readonly int LUA_32BITS = 0;
+	
+	public static readonly int LUAI_MAXSTACK = 1000000;
+	
+	public static readonly int LUA_IDSIZE = 60;
+	
+	public static readonly int LUAL_BUFFERSIZE = 0x80 * 8 * 8;
 	
 	public static ulong lua_strlen(IntPtr L, int i)
 	{
@@ -66,18 +73,10 @@ public static class Lua
 	
 	public static readonly ulong LUA_MAXUNSIGNED = ulong.MaxValue;
 	
-	public static readonly int LUAI_MAXSTACK = 1000000;
-	
-	public static readonly int LUA_IDSIZE = 60;
-	
-	public static readonly int LUAL_BUFFERSIZE = 16 * 8 * 8;
-	
 	public static readonly string LUA_VERSION_MAJOR = "5";
-	public static readonly string LUA_VERSION_MINOR = "4";
-	public static readonly string LUA_VERSION_RELEASE = "4";
-	
-	public static readonly int LUA_VERSION_NUM = 504;
-	public static readonly int LUA_VERSION_RELEASE_NUM = LUA_VERSION_NUM * 100 + 4;
+	public static readonly string LUA_VERSION_MINOR = "3";
+	public static readonly string LUA_VERSION_RELEASE = "6";
+	public static readonly int LUA_VERSION_NUM = 503;
 	
 	public static readonly string LUA_VERSION = "Lua " + LUA_VERSION_MAJOR + "." + LUA_VERSION_MINOR;
 	public static readonly string LUA_RELEASE = LUA_VERSION + "." + LUA_VERSION_RELEASE;
@@ -95,12 +94,15 @@ public static class Lua
 		return LUA_REGISTRYINDEX - i;
 	}
 	
+	// public static readonly int LUA_VERSION_RELEASE_NUM = LUA_VERSION_NUM * 100 + 4;
+	
 	public static readonly int LUA_OK = 0;
 	public static readonly int LUA_YIELD = 1;
 	public static readonly int LUA_ERRRUN = 2;
 	public static readonly int LUA_ERRSYNTAX = 3;
 	public static readonly int LUA_ERRMEM = 4;
-	public static readonly int LUA_ERRERR = 5;
+	public static readonly int LUA_ERRGCMM = 5;
+	public static readonly int LUA_ERRERR = 6;
 	
 	public static readonly int LUA_TNONE = -1;
 	public static readonly int LUA_TNIL = 0;
@@ -113,7 +115,9 @@ public static class Lua
 	public static readonly int LUA_TUSERDATA = 7;
 	public static readonly int LUA_TTHREAD = 8;
 	
-	public static readonly int LUA_NUMTYPES = 9;
+	public static readonly int LUA_NUMTAGS = 9;
+	
+	public static readonly int LUA_MINSTACK = 20;
 	
 	public static readonly int LUA_RIDX_MAINTHREAD = 1;
 	public static readonly int LUA_RIDX_GLOBALS = 2;
@@ -167,9 +171,6 @@ public static class Lua
 	
 	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
 	public static extern IntPtr lua_newthread(IntPtr L);
-	
-	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
-	public static extern int lua_resetthread(IntPtr L);
 	
 	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
 	public static extern lua_CFunction lua_atpanic(IntPtr L, lua_CFunction panicf);
@@ -272,12 +273,12 @@ public static class Lua
 	public static readonly int LUA_OPUNM = 12;
 	public static readonly int LUA_OPBNOT = 13;
 	
+	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
+	public static extern void lua_arith(IntPtr L, int op);
+	
 	public static readonly int LUA_OPEQ = 0;
 	public static readonly int LUA_OPLT = 1;
 	public static readonly int LUA_OPLE = 2;
-	
-	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
-	public static extern void lua_arith(IntPtr L, int op);
 	
 	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
 	public static extern int lua_rawequal(IntPtr L, int idx1, int idx2);
@@ -357,13 +358,13 @@ public static class Lua
 	public static extern void lua_createtable(IntPtr L, int narr, int nrec);
 	
 	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
-	public static extern IntPtr lua_newuserdatauv(IntPtr L, ulong sz, int nuvalue);
+	public static extern IntPtr lua_newuserdata(IntPtr L, ulong sz);
 	
 	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
 	public static extern int lua_getmetatable(IntPtr L, int objindex);
 	
 	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
-	public static extern int lua_getiuservalue(IntPtr L, int idx, int n);
+	public static extern int lua_getuservalue(IntPtr L, int idx);
 	
 	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
 	public static extern void lua_setglobal(IntPtr L, string? name);
@@ -390,7 +391,7 @@ public static class Lua
 	public static extern int lua_setmetatable(IntPtr L, int objindex);
 	
 	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
-	public static extern int lua_setiuservalue(IntPtr L, int idx, int n);
+	public static extern int lua_setuservalue(IntPtr L, int idx);
 	
 	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
 	public static extern void lua_callk(IntPtr L, int nargs, int nresults, IntPtr ctx, lua_KFunction? k);
@@ -418,7 +419,7 @@ public static class Lua
 	public static extern int lua_yieldk(IntPtr L, int nresults, IntPtr ctx, lua_KFunction? k);
 	
 	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
-	public static extern int lua_resume(IntPtr L, IntPtr from, int narg, ref int nres);
+	public static extern int lua_resume(IntPtr L, IntPtr from, int narg);
 	
 	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
 	public static extern int lua_status(IntPtr L);
@@ -431,12 +432,6 @@ public static class Lua
 		return lua_yieldk(L, n, IntPtr.Zero, null);
 	}
 	
-	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
-	public static extern void lua_setwarnf(IntPtr L, lua_WarnFunction f, IntPtr ud);
-	
-	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
-	public static extern void lua_warning(IntPtr L, string msg, int tocont);
-	
 	public static readonly int LUA_GCSTOP = 0;
 	public static readonly int LUA_GCRESTART = 1;
 	public static readonly int LUA_GCCOLLECT = 2;
@@ -446,11 +441,9 @@ public static class Lua
 	public static readonly int LUA_GCSETPAUSE = 6;
 	public static readonly int LUA_GCSETSTEPMUL = 7;
 	public static readonly int LUA_GCISRUNNING = 9;
-	public static readonly int LUA_GCGEN = 10;
-	public static readonly int LUA_GCINC = 11;
 	
 	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
-	public static extern int lua_gc(IntPtr L, int what, params int[] args);
+	public static extern int lua_gc(IntPtr L, int what, int args);
 	
 	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
 	public static extern int lua_error(IntPtr L);
@@ -472,78 +465,6 @@ public static class Lua
 	
 	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
 	public static extern void lua_setallocf(IntPtr L, lua_Alloc f, IntPtr ud);
-	
-	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
-	public static extern void lua_toclose(IntPtr L, int idx);
-	
-	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
-	public static extern void lua_closeslot(IntPtr L, int idx);
-	
-	public static readonly int LUA_HOOKCALL = 0;
-	public static readonly int LUA_HOOKRET = 1;
-	public static readonly int LUA_HOOKLINE = 2;
-	public static readonly int LUA_HOOKCOUNT = 3;
-	public static readonly int LUA_HOOKTAILCALL = 4;
-	
-	public static readonly int LUA_MASKCALL = (1 << LUA_HOOKCALL);
-	public static readonly int LUA_MASKRET = (1 << LUA_HOOKRET);
-	public static readonly int LUA_MASKLINE = (1 << LUA_HOOKLINE);
-	public static readonly int LUA_MASKCOUNT = (1 << LUA_HOOKCOUNT);
-	
-	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
-	public static extern int lua_getstack(IntPtr L, int level, lua_Debug ar);
-	
-	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
-	public static extern int lua_getinfo(IntPtr L, string what, lua_Debug ar);
-	
-	[DllImport(DllName, CallingConvention = CallingConvention.StdCall, EntryPoint = "lua_getlocal")]
-	public static extern IntPtr _lua_getlocal(IntPtr L, lua_Debug ar, int n);
-	public static string? lua_getlocal(IntPtr L, lua_Debug ar, int n)
-	{
-		return Marshal.PtrToStringAnsi(_lua_getlocal(L, ar, n));
-	}
-	
-	[DllImport(DllName, CallingConvention = CallingConvention.StdCall, EntryPoint = "lua_setlocal")]
-	public static extern IntPtr _lua_setlocal(IntPtr L, lua_Debug ar, int n);
-	public static string? lua_setlocal(IntPtr L, lua_Debug ar, int n)
-	{
-		return Marshal.PtrToStringAnsi(_lua_setlocal(L, ar, n));
-	}
-	
-	[DllImport(DllName, CallingConvention = CallingConvention.StdCall, EntryPoint = "lua_getupvalue")]
-	public static extern IntPtr _lua_getupvalue(IntPtr L, int funcindex, int n);
-	public static string? lua_getupvalue(IntPtr L, int funcindex, int n)
-	{
-		return Marshal.PtrToStringAnsi(_lua_getupvalue(L, funcindex, n));
-	}
-	
-	[DllImport(DllName, CallingConvention = CallingConvention.StdCall, EntryPoint = "lua_setupvalue")]
-	public static extern IntPtr _lua_setupvalue(IntPtr L, int funcindex, int n);
-	public static string? lua_setupvalue(IntPtr L, int funcindex, int n)
-	{
-		return Marshal.PtrToStringAnsi(_lua_setupvalue(L, funcindex, n));
-	}
-	
-	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
-	public static extern IntPtr lua_upvalueid(IntPtr L, int fidx, int n);
-	
-	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
-	public static extern void lua_upvaluejoin(IntPtr L, int fidx1, int n1, int fidx2, int n2);
-	
-	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
-	public static extern void lua_sethook(IntPtr L, lua_Hook func, int mask, int count);
-	
-	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
-	public static extern lua_Hook lua_gethook(IntPtr L);
-	
-	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
-	public static extern int lua_gethookmask(IntPtr L);
-	
-	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
-	public static extern int lua_gethookcount(IntPtr L);
-	
-	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
-	public static extern int lua_setcstacklimit(IntPtr L, uint limit);
 	
 	public static IntPtr lua_getextraspace(IntPtr L)
 	{
@@ -672,24 +593,69 @@ public static class Lua
 		return lua_tounsignedx(L, i, ref temp);
 	}
 	
-	public static IntPtr lua_newuserdata(IntPtr L, ulong s)
+	public static readonly int LUA_HOOKCALL = 0;
+	public static readonly int LUA_HOOKRET = 1;
+	public static readonly int LUA_HOOKLINE = 2;
+	public static readonly int LUA_HOOKCOUNT = 3;
+	public static readonly int LUA_HOOKTAILCALL = 4;
+	
+	public static readonly int LUA_MASKCALL = (1 << LUA_HOOKCALL);
+	public static readonly int LUA_MASKRET = (1 << LUA_HOOKRET);
+	public static readonly int LUA_MASKLINE = (1 << LUA_HOOKLINE);
+	public static readonly int LUA_MASKCOUNT = (1 << LUA_HOOKCOUNT);
+	
+	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
+	public static extern int lua_getstack(IntPtr L, int level, lua_Debug ar);
+	
+	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
+	public static extern int lua_getinfo(IntPtr L, string what, lua_Debug ar);
+	
+	[DllImport(DllName, CallingConvention = CallingConvention.StdCall, EntryPoint = "lua_getlocal")]
+	public static extern IntPtr _lua_getlocal(IntPtr L, lua_Debug ar, int n);
+	public static string? lua_getlocal(IntPtr L, lua_Debug ar, int n)
 	{
-		return lua_newuserdatauv(L, s, 1);
+		return Marshal.PtrToStringAnsi(_lua_getlocal(L, ar, n));
 	}
 	
-	public static int lua_getuservalue(IntPtr L, int idx)
+	[DllImport(DllName, CallingConvention = CallingConvention.StdCall, EntryPoint = "lua_setlocal")]
+	public static extern IntPtr _lua_setlocal(IntPtr L, lua_Debug ar, int n);
+	public static string? lua_setlocal(IntPtr L, lua_Debug ar, int n)
 	{
-		return lua_getiuservalue(L, idx, 1);
+		return Marshal.PtrToStringAnsi(_lua_setlocal(L, ar, n));
 	}
 	
-	public static int lua_setuservalue(IntPtr L, int idx)
+	[DllImport(DllName, CallingConvention = CallingConvention.StdCall, EntryPoint = "lua_getupvalue")]
+	public static extern IntPtr _lua_getupvalue(IntPtr L, int funcindex, int n);
+	public static string? lua_getupvalue(IntPtr L, int funcindex, int n)
 	{
-		return lua_setiuservalue(L, idx, 1);
+		return Marshal.PtrToStringAnsi(_lua_getupvalue(L, funcindex, n));
 	}
 	
-	public static readonly int LUA_NUMTAGS = LUA_NUMTYPES;
+	[DllImport(DllName, CallingConvention = CallingConvention.StdCall, EntryPoint = "lua_setupvalue")]
+	public static extern IntPtr _lua_setupvalue(IntPtr L, int funcindex, int n);
+	public static string? lua_setupvalue(IntPtr L, int funcindex, int n)
+	{
+		return Marshal.PtrToStringAnsi(_lua_setupvalue(L, funcindex, n));
+	}
 	
-	public static readonly string LUA_GNAME = "_G";
+	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
+	public static extern IntPtr lua_upvalueid(IntPtr L, int fidx, int n);
+	
+	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
+	public static extern void lua_upvaluejoin(IntPtr L, int fidx1, int n1, int fidx2, int n2);
+	
+	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
+	public static extern void lua_sethook(IntPtr L, lua_Hook func, int mask, int count);
+	
+	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
+	public static extern lua_Hook lua_gethook(IntPtr L);
+	
+	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
+	public static extern int lua_gethookmask(IntPtr L);
+	
+	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
+	public static extern int lua_gethookcount(IntPtr L);
+	
 	public static readonly int LUA_ERRFILE = LUA_ERRERR + 1;
 	
 	public static readonly string LUA_LOADED_TABLE = "_LOADED";
@@ -722,9 +688,6 @@ public static class Lua
 	
 	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
 	public static extern int luaL_argerror(IntPtr L, int arg, string extramsg);
-	
-	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
-	public static extern int luaL_typeerror(IntPtr L, int arg, string tname);
 	
 	[DllImport(DllName, CallingConvention = CallingConvention.StdCall, EntryPoint = "luaL_checklstring")]
 	public static extern IntPtr _luaL_checklstring(IntPtr L, int arg, ref ulong l);
@@ -818,9 +781,6 @@ public static class Lua
 	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
 	public static extern long luaL_len(IntPtr L, int idx);
 	
-	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
-	public static extern void luaL_addgsub(luaL_Buffer b, string s, string p, string r);
-	
 	[DllImport(DllName, CallingConvention = CallingConvention.StdCall, EntryPoint = "luaL_gsub")]
 	public static extern IntPtr _luaL_gsub(IntPtr L, string s, string p, string r);
 	public static string? luaL_gsub(IntPtr L, string s, string p, string r)
@@ -856,12 +816,6 @@ public static class Lua
 	{
 		if (cond == false)
 			luaL_argerror(L, arg, extramsg);
-	}
-	
-	public static void luaL_argexpected(IntPtr L, bool cond, int arg, string tname)
-	{
-		if (cond == false)
-			luaL_typeerror(L, arg, tname);
 	}
 	
 	public static string? luaL_checkstring(IntPtr L, int n)
@@ -914,31 +868,6 @@ public static class Lua
 		return luaL_loadbufferx(L, s, sz, n, null);
 	}
 	
-	public static long luaL_intop_add(long v1, long v2)
-	{
-		return (long) ((ulong) v1  + (ulong) v2);
-	}
-	
-	public static void luaL_pushfail(IntPtr L)
-	{
-		lua_pushnil(L);
-	}
-	
-	public static void lua_assert(bool c)
-	{
-		Debug.Assert(c);
-	}
-	
-	public static ulong luaL_bufferlen(luaL_Buffer bf)
-	{
-		return bf.n;
-	}
-	
-	public static sbyte[] luaL_buffaddr(luaL_Buffer bf)
-	{
-		return bf.init;
-	}
-	
 	public static void luaL_addchar(luaL_Buffer B, sbyte c)
 	{
 		if (B.n >= B.size)
@@ -951,13 +880,8 @@ public static class Lua
 		B.n = (ulong) ((long) B.n + s);
 	}
 	
-	public static void luaL_buffsub(luaL_Buffer B, long s)
-	{
-		B.n = (ulong) ((long) B.n - s);
-	}
-	
 	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
-	public static extern int luaL_buffinit(IntPtr L, IntPtr B);
+	public static extern void luaL_buffinit(IntPtr L, IntPtr B);
 	
 	[DllImport(DllName, CallingConvention = CallingConvention.StdCall, EntryPoint = "luaL_prepbuffsize")]
 	public static extern IntPtr _luaL_prepbuffsize(luaL_Buffer B, ulong sz);
@@ -973,7 +897,7 @@ public static class Lua
 	public static extern void luaL_addstring(IntPtr B, string s);
 	
 	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
-	public static extern void luaL_addvalue(IntPtr B, string s);
+	public static extern void luaL_addvalue(IntPtr B);
 	
 	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
 	public static extern void luaL_pushresult(IntPtr B);
@@ -983,6 +907,22 @@ public static class Lua
 	
 	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
 	public static extern IntPtr luaL_buffinitsize(IntPtr L, IntPtr B, ulong sz);
+	
+	public static string? luaL_prepbuffer(luaL_Buffer B)
+	{
+		return luaL_prepbuffsize(B, (ulong) LUAL_BUFFERSIZE);
+	}
+	
+	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
+	public static extern void luaL_pushmodule(IntPtr L, string modname, int sizehint);
+	
+	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
+	public static extern void luaL_openlib(IntPtr L, string libname, luaL_Reg l, int nup);
+	
+	public static void luaL_register(IntPtr L, string n, luaL_Reg l)
+	{
+		luaL_openlib(L, n, l, 0);
+	}
 	
 	public static void lua_writestring(string s)
 	{
@@ -1029,8 +969,6 @@ public static class Lua
 		return (int) luaL_optinteger(L, n, d);
 	}
 	
-	public static readonly string LUA_FILEHANDLED = "FILE*";
-	
 	public static readonly string LUA_VERSUFFIX = "_" + LUA_VERSION_MAJOR + "_" + LUA_VERSION_MINOR;
 	
 	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
@@ -1053,6 +991,9 @@ public static class Lua
 	
 	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
 	public static extern int luaopen_utf8(IntPtr L);
+	
+	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
+	public static extern int luaopen_bit32(IntPtr L);
 	
 	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
 	public static extern int luaopen_math(IntPtr L);
