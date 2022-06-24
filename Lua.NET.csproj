@@ -10,6 +10,11 @@
     <copyright>Copyright © Cody Tilkins 2022</copyright>
     <Description>Lua.NET is full bindings to Lua and LuaJIT</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
+  
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\"/>
+  </ItemGroup>
   
 </Project>
