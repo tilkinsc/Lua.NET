@@ -410,7 +410,7 @@ public static class Lua
 	}
 	
 	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
-	public static extern int lua_load(IntPtr L, lua_Reader reader, IntPtr dt, string chunkname, string mode);
+	public static extern int lua_load(IntPtr L, lua_Reader reader, IntPtr dt, string chunkname, string? mode);
 	
 	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
 	public static extern int lua_dump(IntPtr L, lua_Writer writer, IntPtr data, int strip);
@@ -683,8 +683,12 @@ public static class Lua
 	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
 	public static extern int luaL_callmeta(IntPtr L, int obj, string e);
 	
-	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
-	public static extern string luaL_tolstring(IntPtr L, int idx, ref ulong len);
+	[DllImport(DllName, CallingConvention = CallingConvention.StdCall, EntryPoint = "luaL_tolstring")]
+	public static extern IntPtr _luaL_tolstring(IntPtr L, int idx, ref ulong len);
+	public static string? luaL_tolstring(IntPtr L, int idx, ref ulong len)
+	{
+		return Marshal.PtrToStringAnsi(_luaL_tolstring(L, idx, ref len));
+	}
 	
 	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
 	public static extern int luaL_argerror(IntPtr L, int arg, string extramsg);

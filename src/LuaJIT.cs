@@ -49,8 +49,6 @@ public static class Lua
 	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
 	public static extern void luaJIT_version_2_1_0_beta3();
 	
-	////
-	
 	public delegate int lua_CFunction(IntPtr L);
 	public delegate int lua_KFunction(IntPtr L, int status, IntPtr ctx);
 	public delegate void lua_WarnFunction(IntPtr ud, string msg, int tocont);
@@ -58,8 +56,6 @@ public static class Lua
 	public delegate IntPtr lua_Reader(IntPtr L, IntPtr ud, ref ulong sz);
 	public delegate IntPtr lua_Alloc(IntPtr ud, IntPtr ptr, ulong osize, ulong nsize);
 	public delegate void lua_Hook(IntPtr L, lua_Debug ar);
-	
-	////
 	
 	public static readonly string LUA_LDIR = "!\\lua\\";
 	public static readonly string LUA_CDIR = "!\\";
@@ -104,8 +100,6 @@ public static class Lua
 	{
 		Debug.Assert(c);
 	}
-	
-	////
 	
 	public static readonly string LUA_VERSION = "Lua 5.1";
 	public static readonly string LUA_RELEASE = "Lua 5.1.4";
@@ -590,8 +584,6 @@ public static class Lua
 		public int i_ci;
 	};
 	
-	////
-	
 	public static readonly int LUA_ERRFILE = LUA_ERRERR + 1;
 	
 	[StructLayout(LayoutKind.Sequential, Pack = 1, CharSet = CharSet.Ansi)]
@@ -857,8 +849,6 @@ public static class Lua
 	
 	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
 	public static extern void luaL_pushresult(luaL_Buffer B);
-	
-	////
 	
 	public static readonly string LUA_COLIBNAME = "coroutine";
 	public static readonly string LUA_MATHLIBNAME = "math";
