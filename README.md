@@ -5,7 +5,7 @@ https://github.com/tilkinsc/Lua.NET
 Copyright © Cody Tilkins 2022 MIT License  
 
 ```
-dotnet add package Lua.NET --version 1.2.0
+dotnet add package Lua.NET --version 1.2.2
 ```
 
 Supports Lua5.4 Lua5.3 Lua5.2 Lua5.1 and LuaJIT  
