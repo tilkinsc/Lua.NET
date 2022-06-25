@@ -1,5 +1,5 @@
 # Lua.NET
-![Logo](Lua.NET.Logo.png)
+![Logo](https://raw.githubusercontent.com/tilkinsc/Lua.NET/main/Lua.NET.Logo.png)
 
 C# .NET Core 6.0 Lua bindings and helper functions.
 

@@ -9,18 +9,18 @@ public static class Lua
 	
 	private const string DllName = "Lua524.dll";
 	
-	public static readonly string LUA_LDIR = "!\\lua\\";
-	public static readonly string LUA_CDIR = "!\\";
-	public static readonly string LUA_PATH_DEFAULT = LUA_LDIR + "?.lua;" + LUA_LDIR + "?\\init.lua;" + LUA_CDIR + "?.lua;" + LUA_CDIR + "?\\init.lua;" + ".\\?.lua";
-	public static readonly string LUA_CPATH_DEFAULT = LUA_CDIR + "?.dll;" + LUA_CDIR + "loadall.dll;" + ".\\?.dll";
+	public const string LUA_LDIR = "!\\lua\\";
+	public const string LUA_CDIR = "!\\";
+	public const string LUA_PATH_DEFAULT = LUA_LDIR + "?.lua;" + LUA_LDIR + "?\\init.lua;" + LUA_CDIR + "?.lua;" + LUA_CDIR + "?\\init.lua;" + ".\\?.lua";
+	public const string LUA_CPATH_DEFAULT = LUA_CDIR + "?.dll;" + LUA_CDIR + "loadall.dll;" + ".\\?.dll";
 	
-	public static readonly string LUA_DIRSEP = "\\";
+	public const string LUA_DIRSEP = "\\";
 	
-	public static readonly string LUA_ENV = "_ENV";
+	public const string LUA_ENV = "_ENV";
 	
-	public static readonly int LUA_IDSIZE = 60;
+	public const int LUA_IDSIZE = 60;
 	
-	public static readonly int LUAI_MAXSHORTLEN = 40;
+	public const int LUAI_MAXSHORTLEN = 40;
 	
 	public static void lua_cpcall(IntPtr L, lua_CFunction f, IntPtr u)
 	{
@@ -49,62 +49,62 @@ public static class Lua
 		return lua_compare(L, idx1, idx2, LUA_OPLT);
 	}
 	
-	public static readonly int LUA_BITSINT = 32;
+	public const int LUA_BITSINT = 32;
 	
-	public static readonly int LUAI_MAXSTACK = 1000000;
+	public const int LUAI_MAXSTACK = 1000000;
 	
-	public static readonly int LUAI_FIRSTPSEUDOIDX = (-LUAI_MAXSTACK - 1000);
+	public const int LUAI_FIRSTPSEUDOIDX = (-LUAI_MAXSTACK - 1000);
 	
-	public static readonly int LUAL_BUFFERSIZE = 512;
+	public const int LUAL_BUFFERSIZE = 512;
 	
-	public static readonly string LUA_VERSION_MAJOR = "5";
-	public static readonly string LUA_VERSION_MINOR = "2";
-	public static readonly int LUA_VERSION_NUM = 502;
-	public static readonly string LUA_VERSION_RELEASE = "4";
+	public const string LUA_VERSION_MAJOR = "5";
+	public const string LUA_VERSION_MINOR = "2";
+	public const int LUA_VERSION_NUM = 502;
+	public const string LUA_VERSION_RELEASE = "4";
 	
-	public static readonly string LUA_VERSION = "Lua " + LUA_VERSION_MAJOR + "." + LUA_VERSION_MINOR;
-	public static readonly string LUA_RELEASE = LUA_VERSION + "." + LUA_VERSION_RELEASE;
-	public static readonly string LUA_COPYRIGHT = LUA_RELEASE + "  Copyright (C) 1994-2015 Lua.org, PUC-Rio";
-	public static readonly string LUA_AUTHORS = "R. Ierusalimschy, L. H. de Figueiredo, W. Celes";
+	public const string LUA_VERSION = "Lua " + LUA_VERSION_MAJOR + "." + LUA_VERSION_MINOR;
+	public const string LUA_RELEASE = LUA_VERSION + "." + LUA_VERSION_RELEASE;
+	public const string LUA_COPYRIGHT = LUA_RELEASE + "  Copyright (C) 1994-2015 Lua.org, PUC-Rio";
+	public const string LUA_AUTHORS = "R. Ierusalimschy, L. H. de Figueiredo, W. Celes";
 	
 	// TODO: \033Lua
-	public static readonly string LUA_SIGNATURE = "\x1bLua";
+	public const string LUA_SIGNATURE = "\x1bLua";
 	
-	public static readonly int LUA_MULTRET = -1;
+	public const int LUA_MULTRET = -1;
 	
-	public static readonly int LUA_REGISTRYINDEX = LUAI_FIRSTPSEUDOIDX;
+	public const int LUA_REGISTRYINDEX = LUAI_FIRSTPSEUDOIDX;
 	
 	public static int lua_upvalueindex(int i)
 	{
 		return LUA_REGISTRYINDEX - i;
 	}
 	
-	public static readonly int LUA_OK = 0;
-	public static readonly int LUA_YIELD = 1;
-	public static readonly int LUA_ERRRUN = 2;
-	public static readonly int LUA_ERRSYNTAX = 3;
-	public static readonly int LUA_ERRMEM = 4;
-	public static readonly int LUA_ERRGCMM = 5;
-	public static readonly int LUA_ERRERR = 6;
+	public const int LUA_OK = 0;
+	public const int LUA_YIELD = 1;
+	public const int LUA_ERRRUN = 2;
+	public const int LUA_ERRSYNTAX = 3;
+	public const int LUA_ERRMEM = 4;
+	public const int LUA_ERRGCMM = 5;
+	public const int LUA_ERRERR = 6;
 	
-	public static readonly int LUA_TNONE = -1;
-	public static readonly int LUA_TNIL = 0;
-	public static readonly int LUA_TBOOLEAN = 1;
-	public static readonly int LUA_TLIGHTUSERDATA = 2;
-	public static readonly int LUA_TNUMBER = 3;
-	public static readonly int LUA_TSTRING = 4;
-	public static readonly int LUA_TTABLE = 5;
-	public static readonly int LUA_TFUNCTION = 6;
-	public static readonly int LUA_TUSERDATA = 7;
-	public static readonly int LUA_TTHREAD = 8;
+	public const int LUA_TNONE = -1;
+	public const int LUA_TNIL = 0;
+	public const int LUA_TBOOLEAN = 1;
+	public const int LUA_TLIGHTUSERDATA = 2;
+	public const int LUA_TNUMBER = 3;
+	public const int LUA_TSTRING = 4;
+	public const int LUA_TTABLE = 5;
+	public const int LUA_TFUNCTION = 6;
+	public const int LUA_TUSERDATA = 7;
+	public const int LUA_TTHREAD = 8;
 	
-	public static readonly int LUA_NUMTAGS = 9;
+	public const int LUA_NUMTAGS = 9;
 	
-	public static readonly int LUA_MINSTACK = 20;
+	public const int LUA_MINSTACK = 20;
 	
-	public static readonly int LUA_RIDX_MAINTHREAD = 1;
-	public static readonly int LUA_RIDX_GLOBALS = 2;
-	public static readonly int LUA_RIDX_LAST = LUA_RIDX_GLOBALS;
+	public const int LUA_RIDX_MAINTHREAD = 1;
+	public const int LUA_RIDX_GLOBALS = 2;
+	public const int LUA_RIDX_LAST = LUA_RIDX_GLOBALS;
 	
 	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
 	public static extern IntPtr lua_newstate(lua_Alloc f, IntPtr ud);
@@ -207,20 +207,20 @@ public static class Lua
 	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
 	public static extern IntPtr lua_topointer(IntPtr L, int idx);
 	
-	public static readonly int LUA_OPADD = 0;
-	public static readonly int LUA_OPSUB = 1;
-	public static readonly int LUA_OPMUL = 2;
-	public static readonly int LUA_OPDIV = 3;
-	public static readonly int LUA_OPMOD = 4;
-	public static readonly int LUA_OPPOW = 5;
-	public static readonly int LUA_OPUNM = 6;
+	public const int LUA_OPADD = 0;
+	public const int LUA_OPSUB = 1;
+	public const int LUA_OPMUL = 2;
+	public const int LUA_OPDIV = 3;
+	public const int LUA_OPMOD = 4;
+	public const int LUA_OPPOW = 5;
+	public const int LUA_OPUNM = 6;
 	
 	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
 	public static extern void lua_arith(IntPtr L, int op);
 	
-	public static readonly int LUA_OPEQ = 0;
-	public static readonly int LUA_OPLT = 1;
-	public static readonly int LUA_OPLE = 2;
+	public const int LUA_OPEQ = 0;
+	public const int LUA_OPLT = 1;
+	public const int LUA_OPLE = 2;
 	
 	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
 	public static extern int lua_rawequal(IntPtr L, int idx1, int idx2);
@@ -371,18 +371,18 @@ public static class Lua
 	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
 	public static extern int lua_status(IntPtr L);
 	
-	public static readonly int LUA_GCSTOP = 0;
-	public static readonly int LUA_GCRESTART = 1;
-	public static readonly int LUA_GCCOLLECT = 2;
-	public static readonly int LUA_GCCOUNT = 3;
-	public static readonly int LUA_GCCOUNTB = 4;
-	public static readonly int LUA_GCSTEP = 5;
-	public static readonly int LUA_GCSETPAUSE = 6;
-	public static readonly int LUA_GCSETSTEPMUL = 7;
-	public static readonly int LUA_GCSETMAJORINC = 8;
-	public static readonly int LUA_GCISRUNNING = 9;
-	public static readonly int LUA_GCGEN = 10;
-	public static readonly int LUA_GCINC = 11;
+	public const int LUA_GCSTOP = 0;
+	public const int LUA_GCRESTART = 1;
+	public const int LUA_GCCOLLECT = 2;
+	public const int LUA_GCCOUNT = 3;
+	public const int LUA_GCCOUNTB = 4;
+	public const int LUA_GCSTEP = 5;
+	public const int LUA_GCSETPAUSE = 6;
+	public const int LUA_GCSETSTEPMUL = 7;
+	public const int LUA_GCSETMAJORINC = 8;
+	public const int LUA_GCISRUNNING = 9;
+	public const int LUA_GCGEN = 10;
+	public const int LUA_GCINC = 11;
 	
 	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
 	public static extern int lua_gc(IntPtr L, int what, int data);
@@ -500,16 +500,16 @@ public static class Lua
 		return lua_tolstring(L, i, ref temp);
 	}
 	
-	public static readonly int LUA_HOOKCALL = 0;
-	public static readonly int LUA_HOOKRET = 1;
-	public static readonly int LUA_HOOKLINE = 2;
-	public static readonly int LUA_HOOKCOUNT = 3;
-	public static readonly int LUA_HOOKTAILCALL = 4;
+	public const int LUA_HOOKCALL = 0;
+	public const int LUA_HOOKRET = 1;
+	public const int LUA_HOOKLINE = 2;
+	public const int LUA_HOOKCOUNT = 3;
+	public const int LUA_HOOKTAILCALL = 4;
 	
-	public static readonly int LUA_MASKCALL = (1 << LUA_HOOKCALL);
-	public static readonly int LUA_MASKRET = (1 << LUA_HOOKRET);
-	public static readonly int LUA_MASKLINE = (1 << LUA_HOOKLINE);
-	public static readonly int LUA_MASKCOUNT = (1 << LUA_HOOKCOUNT);
+	public const int LUA_MASKCALL = (1 << LUA_HOOKCALL);
+	public const int LUA_MASKRET = (1 << LUA_HOOKRET);
+	public const int LUA_MASKLINE = (1 << LUA_HOOKLINE);
+	public const int LUA_MASKCOUNT = (1 << LUA_HOOKCOUNT);
 	
 	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
 	public static extern int lua_getstack(IntPtr L, int level, lua_Debug ar);
@@ -603,7 +603,7 @@ public static class Lua
 	public delegate IntPtr lua_Alloc(IntPtr ud, IntPtr ptr, ulong osize, ulong nsize);
 	public delegate void lua_Hook(IntPtr L, lua_Debug ar);
 	
-	public static readonly int LUA_ERRFILE = LUA_ERRERR + 1;
+	public const int LUA_ERRFILE = LUA_ERRERR + 1;
 	
 	[StructLayout(LayoutKind.Sequential, Pack = 1, CharSet = CharSet.Ansi)]
 	public struct luaL_Reg {
@@ -704,8 +704,8 @@ public static class Lua
 	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
 	public static extern int luaL_execresult(IntPtr L, int stat);
 	
-	public static readonly int LUA_NOREF = -2;
-	public static readonly int LUA_REFNIL = -1;
+	public const int LUA_NOREF = -2;
+	public const int LUA_REFNIL = -1;
 	
 	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
 	public static extern int luaL_ref(IntPtr L, int t);
