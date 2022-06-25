@@ -5,15 +5,17 @@ https://github.com/tilkinsc/Lua.NET
 Copyright © Cody Tilkins 2022 MIT License  
 
 ```
-dotnet add package Lua.NET --version 1.0.0
+dotnet add package Lua.NET --version 1.2.0
 ```
 
-Supports Lua5.4 Lua5.3 and LuaJIT  
+Supports Lua5.4 Lua5.3 Lua5.2 Lua5.1 and LuaJIT  
 
 Hardcoded to only use doubles and 64-bit integers, so the Lua library will have to be built accordingly. This CAN be changed with manual edits, but it wasn't fun writing this library. This code was made with with the default includes on a 64-bit windows 10 machine using Lua's makefile and LuaJIT. All DLL's are named differently, make sure the name of the Lua dll matches that of the .cs file; will make it easier in the future.
 ```
 Lua5.4 - lua544.dll
 Lua5.3 - lua536.dll
+Lua5.2 - lua524.dll
+Lua5.1 - lua515.dll
 LuaJIT - lua51.dll
 ```
 

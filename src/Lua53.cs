@@ -885,7 +885,7 @@ public static class Lua
 	}
 	
 	[DllImport(DllName, CallingConvention = CallingConvention.StdCall)]
-	public static extern void luaL_buffinit(IntPtr L, IntPtr B);
+	public static extern void luaL_buffinit(IntPtr L, luaL_Buffer B);
 	
 	[DllImport(DllName, CallingConvention = CallingConvention.StdCall, EntryPoint = "luaL_prepbuffsize")]
 	public static extern IntPtr _luaL_prepbuffsize(luaL_Buffer B, ulong sz);
