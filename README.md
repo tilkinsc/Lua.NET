@@ -1,11 +1,13 @@
 # Lua.NET
+![Logo](Lua.NET.Logo.png)
+
 C# .NET Core 6.0 Lua bindings and helper functions.
 
 https://github.com/tilkinsc/Lua.NET  
 Copyright © Cody Tilkins 2022 MIT License  
 
 ```
-dotnet add package Lua.NET --version 1.2.2
+dotnet add package Lua.NET --version 1.2.3
 ```
 
 Supports Lua5.4 Lua5.3 Lua5.2 Lua5.1 and LuaJIT  
