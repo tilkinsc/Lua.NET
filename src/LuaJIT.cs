@@ -660,9 +660,8 @@ public static class Lua
 	[DllImport(DllName, CallingConvention = Convention)]
 	public static extern int luaL_error(lua_State L, string fmt, params string[] args);
 	
-	// TODO: I dont think string[][] works
 	[DllImport(DllName, CallingConvention = Convention)]
-	public static extern int luaL_checkoption(lua_State L, int narg, string def, string[][] lst);
+	public static extern int luaL_checkoption(lua_State L, int narg, string def, string[] lst);
 	
 	public const int LUA_NOREF = -2;
 	public const int LUA_REFNIL = -1;

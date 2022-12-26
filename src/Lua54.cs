@@ -1,7 +1,6 @@
 namespace Lua54;
 
 using System;
-using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 using voidp = System.UIntPtr;
@@ -765,9 +764,8 @@ public static class Lua
 	[DllImport(DllName, CallingConvention = Convention)]
 	public static extern int luaL_error(lua_State L, string fmt, params string[] args);
 	
-	// TODO: I dont think string[][] works
 	[DllImport(DllName, CallingConvention = Convention)]
-	public static extern int luaL_checkoption(lua_State L, int arg, string def, string[][] lst);
+	public static extern int luaL_checkoption(lua_State L, int arg, string def, string[] lst);
 	
 	[DllImport(DllName, CallingConvention = Convention)]
 	public static extern int luaL_fileresult(lua_State L, int stat, string fname);
