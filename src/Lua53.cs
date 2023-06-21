@@ -1,16 +1,20 @@
-namespace Lua53;
-
-using System;
 using System.Runtime.InteropServices;
 
 using voidp = System.UIntPtr;
 using charp = System.IntPtr;
 using size_t = System.UInt64;
-using lua_State = System.UIntPtr;
 using lua_Number = System.Double;
 using lua_Integer = System.Int64;
 using lua_Unsigned = System.UInt64;
+using Lua54;
 
+namespace Lua53;
+
+
+public struct lua_State
+{
+	public UIntPtr Handle;
+}
 
 public static class Lua
 {
@@ -34,13 +38,13 @@ public static class Lua
 		public sbyte istailcall;
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = LUA_IDSIZE)]
 		public sbyte[] short_src;
-		public IntPtr i_ci;
+		public charp i_ci;
 	};
 	
 	[StructLayout(LayoutKind.Sequential, Pack = 1, CharSet = CharSet.Ansi)]
 	public struct luaL_Reg {
 		public string name;
-		public lua_CFunction func;
+		public charp func;
 	};
 	
 	[StructLayout(LayoutKind.Sequential, Pack = 1, CharSet = CharSet.Ansi)]
@@ -54,7 +58,7 @@ public static class Lua
 	};
 	
 	public delegate int lua_CFunction(lua_State L);
-	public delegate int lua_KFunction(lua_State L, int status, IntPtr ctx);
+	public delegate int lua_KFunction(lua_State L, int status, lua_KContext ctx);
 	public delegate charp lua_Reader(lua_State L, voidp ud, ref size_t sz);
 	public delegate int lua_Writer(lua_State L, voidp p, size_t sz, voidp ud);
 	public delegate voidp lua_Alloc(voidp ud, voidp ptr, size_t osize, size_t nsize);
@@ -165,8 +169,13 @@ public static class Lua
 	[DllImport(DllName, CallingConvention = Convention)]
 	public static extern lua_State lua_newthread(lua_State L);
 	
-	[DllImport(DllName, CallingConvention = Convention)]
-	public static extern lua_CFunction lua_atpanic(lua_State L, lua_CFunction panicf);
+	[DllImport(DllName, CallingConvention = Convention, EntryPoint = "lua_atpanic")]
+	public static extern charp _lua_atpanic(lua_State L, charp panicf);
+	public static lua_CFunction? lua_atpanic(lua_State L, lua_CFunction? panicf)
+	{
+		charp panic = _lua_atpanic(L, panicf == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate<lua_CFunction>(panicf));
+		return panic == IntPtr.Zero ? null : Marshal.GetDelegateForFunctionPointer<lua_CFunction>(panic);
+	}
 	
 	[DllImport(DllName, CallingConvention = Convention, EntryPoint = "lua_version")]
 	public static extern IntPtr _lua_version(lua_State L);
@@ -249,8 +258,13 @@ public static class Lua
 	[DllImport(DllName, CallingConvention = Convention)]
 	public static extern size_t lua_rawlen(lua_State L, int idx);
 	
-	[DllImport(DllName, CallingConvention = Convention)]
-	public static extern lua_CFunction lua_tocfunction(lua_State L, int idx);
+	[DllImport(DllName, CallingConvention = Convention, EntryPoint = "lua_tocfunction")]
+	public static extern charp _lua_tocfunction(lua_State L, int idx);
+	public static lua_CFunction? lua_tocfunction(lua_State L, int idx)
+	{
+		charp ret = _lua_tocfunction(L, idx);
+		return ret == IntPtr.Zero ? null : Marshal.GetDelegateForFunctionPointer<lua_CFunction>(ret);
+	}
 	
 	[DllImport(DllName, CallingConvention = Convention)]
 	public static extern voidp lua_touserdata(lua_State L, int idx);
@@ -324,8 +338,12 @@ public static class Lua
 	// 	return Marshal.PtrToStringAnsi(_lua_pushfstring(L, fmt, args));
 	// }
 	
-	[DllImport(DllName, CallingConvention = Convention)]
-	public static extern void lua_pushcclosure(lua_State L, lua_CFunction fn, int n);
+	[DllImport(DllName, CallingConvention = Convention, EntryPoint = "lua_pushcclosure")]
+	public static extern void _lua_pushcclosure(lua_State L, charp fn, int n);
+	public static void lua_pushcclosure(lua_State L, lua_CFunction? fn, int n)
+	{
+		_lua_pushcclosure(L, fn == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(fn), n);
+	}
 	
 	[DllImport(DllName, CallingConvention = Convention)]
 	public static extern void lua_pushboolean(lua_State L, int b);
@@ -396,20 +414,28 @@ public static class Lua
 	[DllImport(DllName, CallingConvention = Convention)]
 	public static extern void lua_setuservalue(lua_State L, int idx);
 	
-	[DllImport(DllName, CallingConvention = Convention)]
-	public static extern void lua_callk(lua_State L, int nargs, int nresults, IntPtr ctx, lua_KFunction? k);
+	[DllImport(DllName, CallingConvention = Convention, EntryPoint = "lua_callk")]
+	public static extern void _lua_callk(lua_State L, int nargs, int nresults, charp ctx, charp k);
+	public static void lua_callk(lua_State L, int nargs, int nresults, lua_KContext? ctx, lua_KFunction? k)
+	{
+		_lua_callk(L, nargs, nresults, ctx == null ? IntPtr.Zero : ctx.Value.Handle, k == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(k));
+	}
 	
 	public static void lua_call(lua_State L, int n, int r)
 	{
-		lua_callk(L, n, r, IntPtr.Zero, null);
+		lua_callk(L, n, r, null, null);
 	}
 	
-	[DllImport(DllName, CallingConvention = Convention)]
-	public static extern int lua_pcallk(lua_State L, int nargs, int nresults, int errfunc, IntPtr ctx, lua_KFunction? k);
+	[DllImport(DllName, CallingConvention = Convention, EntryPoint = "lua_pcallk")]
+	public static extern int _lua_pcallk(lua_State L, int nargs, int nresults, int errfunc, charp ctx, charp k);
+	public static int lua_pcallk(lua_State L, int nargs, int nresults, int errfunc, lua_KContext? ctx, lua_KFunction? k)
+	{
+		return _lua_pcallk(L, nargs, nresults, errfunc, ctx == null ? IntPtr.Zero : ctx.Value.Handle, k == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(k));
+	}
 	
 	public static int lua_pcall(lua_State L, int n, int r, int f)
 	{
-		return lua_pcallk(L, n, r, f, IntPtr.Zero, null);
+		return lua_pcallk(L, n, r, f, null, null);
 	}
 	
 	[DllImport(DllName, CallingConvention = Convention)]
@@ -418,8 +444,12 @@ public static class Lua
 	[DllImport(DllName, CallingConvention = Convention)]
 	public static extern int lua_dump(lua_State L, lua_Writer writer, voidp data, int strip);
 	
-	[DllImport(DllName, CallingConvention = Convention)]
-	public static extern int lua_yieldk(lua_State L, int nresults, IntPtr ctx, lua_KFunction? k);
+	[DllImport(DllName, CallingConvention = Convention, EntryPoint = "lua_yieldk")]
+	public static extern int _lua_yieldk(lua_State L, int nresults, charp ctx, charp k);
+	public static int lua_yieldk(lua_State L, int nresults, lua_KContext? ctx, lua_KFunction? k)
+	{
+		return _lua_yieldk(L, nresults, ctx == null ? IntPtr.Zero : ctx.Value.Handle, k == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(k));
+	}
 	
 	[DllImport(DllName, CallingConvention = Convention)]
 	public static extern int lua_resume(lua_State L, lua_State from, int narg);
@@ -432,7 +462,7 @@ public static class Lua
 	
 	public static int lua_yield(lua_State L, int n)
 	{
-		return lua_yieldk(L, n, IntPtr.Zero, null);
+		return lua_yieldk(L, n, null, null);
 	}
 	
 	public const int LUA_GCSTOP = 0;
@@ -471,7 +501,7 @@ public static class Lua
 	
 	public static voidp lua_getextraspace(lua_State L)
 	{
-		return L - 8;
+		return L.Handle - 8;
 	}
 	
 	public static lua_Number lua_tonumber(lua_State L, int i)
@@ -496,13 +526,13 @@ public static class Lua
 		lua_createtable(L, 0, 0);
 	}
 	
-	public static void lua_register(lua_State L, string n, lua_CFunction f)
+	public static void lua_register(lua_State L, string n, lua_CFunction? f)
 	{
 		lua_pushcclosure(L, f, 0);
 		lua_setglobal(L, n);
 	}
 	
-	public static void lua_pushcfunction(lua_State L, lua_CFunction f)
+	public static void lua_pushcfunction(lua_State L, lua_CFunction? f)
 	{
 		lua_pushcclosure(L, f, 0);
 	}
@@ -783,7 +813,11 @@ public static class Lua
 	public static extern void luaL_traceback(lua_State L, lua_State L1, string msg, int level);
 	
 	[DllImport(DllName, CallingConvention = Convention)]
-	public static extern void luaL_requiref(lua_State L, string modname, lua_CFunction openf, int glb);
+	public static extern void _luaL_requiref(lua_State L, string modname, charp openf, int glb);
+	public static void luaL_requiref(lua_State L, string modname, lua_CFunction? openf, int glb)
+	{
+		_luaL_requiref(L, modname, openf == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate<lua_CFunction>(openf), glb);
+	}
 	
 	public static void luaL_newlibtable(lua_State L, luaL_Reg[] l)
 	{
