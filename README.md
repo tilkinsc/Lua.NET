@@ -65,7 +65,6 @@ class Project
 	
 	public static void Main(String[] args)
 	{
-		
 		lua_State L = luaL_newstate();
 		if (L.Handle == UIntPtr.Zero)
 		{
@@ -77,7 +76,6 @@ class Project
 		lua_close(L);
 		
 		Console.WriteLine("Success");
-		
 	}
 	
 }
@@ -85,9 +83,10 @@ class Project
 
 Example Usage LuaJIT:
 ```C#
-namespace LuaNET;
-
+using LuaJIT;
 using static LuaJIT.Lua;
+
+namespace LuaNET;
 
 class Project
 {
@@ -102,7 +101,6 @@ class Project
 	
 	public static void Main(String[] args)
 	{
-		
 		lua_State L = luaL_newstate();
 		if (L.Handle == UIntPtr.Zero)
 		{
@@ -114,7 +112,6 @@ class Project
 		lua_close(L);
 		
 		Console.WriteLine("Success");
-		
 	}
 	
 }
