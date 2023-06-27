@@ -40,12 +40,17 @@ If you are just here to use the library, you can get by without having to worry 
 
 Example Usage Lua5.4.4:
 ```C#
+// test1.csproj
+// <PropertyGroup>
+//     ...
+//     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+// </PropertyGroup>
 using Lua54;
 using static Lua54.Lua;
 
-namespace LuaNET;
+namespace TestLua;
 
-class Project
+public class Test1
 {
 	
 	public static int lfunc(lua_State L)
@@ -59,7 +64,7 @@ class Project
 	public static void Main(String[] args)
 	{
 		lua_State L = luaL_newstate();
-		if (L.Handle == UIntPtr.Zero)
+		if (L.Handle == 0)
 		{
 			Console.WriteLine("Unable to create context!");
 		}
@@ -76,12 +81,17 @@ class Project
 
 Example Usage LuaJIT:
 ```C#
+// test2.csproj
+// <PropertyGroup>
+//     ...
+//     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+// </PropertyGroup>
 using LuaJIT;
 using static LuaJIT.Lua;
 
-namespace LuaNET;
+namespace TestLua;
 
-class Project
+public class Test2
 {
 	
 	public static int lfunc(lua_State L)
@@ -95,7 +105,7 @@ class Project
 	public static void Main(String[] args)
 	{
 		lua_State L = luaL_newstate();
-		if (L.Handle == UIntPtr.Zero)
+		if (L.Handle == 0)
 		{
 			Console.WriteLine("Unable to create context!");
 		}
@@ -112,7 +122,7 @@ class Project
 
 Example Usage NativeAOT DLL Library:
 ```C#
-// test2.csproj
+// test3.csproj
 // <PropertyGroup>
 //     ...
 //     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -123,9 +133,9 @@ using System.Runtime.InteropServices;
 using LuaJIT;
 using static LuaJIT.Lua;
 
-namespace test2;
+namespace TestLua;
 
-public unsafe class Test2
+public unsafe class Test3
 {
 	
 	[UnmanagedCallersOnly]
@@ -151,12 +161,15 @@ public unsafe class Test2
 	
 }
 
-// test1.csproj
-
+// test4.csproj
+// <PropertyGroup>
+//     ...
+//     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+// </PropertyGroup>
 using LuaJIT;
 using static LuaJIT.Lua;
 
-namespace test1;
+namespace test4;
 
 public class Test1
 {
@@ -164,13 +177,11 @@ public class Test1
 	public static void Main(string[] args)
 	{
 		lua_State L = luaL_newstate();
-		if (L.Handle == UIntPtr.Zero)
+		if (L.Handle == 0)
 		{
 			Console.WriteLine("Unable to create context!");
 		}
 		luaL_openlibs(L);
-		
-		// require("test2.dll");
 		lua_getglobal(L, "require");
 		lua_pushstring(L, "test2");
 		int result = lua_pcall(L, 1, 0, 0);
@@ -179,11 +190,9 @@ public class Test1
 			string? err = luaL_checkstring(L, 1);
 			if (err != null)
 			{
-				Console.WriteLine($"1 Error Result: {err}");
+				Console.WriteLine($"1 Result: {err}");
 			}
 		}
-		
-		// print(_G.test2.GetHello())
 		lua_getglobal(L, "test2");
 		lua_getglobal(L, "print");
 		lua_getfield(L, 1, "GetHello");
@@ -193,7 +202,7 @@ public class Test1
 			string? err = luaL_checkstring(L, 1);
 			if (err != null)
 			{
-				Console.WriteLine($"2 Error Result: {err}");
+				Console.WriteLine($"2 Result: {err}");
 			}
 		}
 		result = lua_pcall(L, 1, 0, 0);
@@ -202,10 +211,9 @@ public class Test1
 			string? err = luaL_checkstring(L, 1);
 			if (err != null)
 			{
-				Console.WriteLine($"3 Error Result: {err}");
+				Console.WriteLine($"3 Result: {err}");
 			}
 		}
-		// pop test2
 		lua_pop(L, 1);
 		
 		lua_close(L);
