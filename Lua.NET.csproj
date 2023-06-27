@@ -1,11 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net6.0;net6.0-windows</TargetFrameworks>
+    <TargetFrameworks>net7.0;net7.0-windows;net6.0;net6.0-windows</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Nullable>enable</Nullable>
 	  <PackageId>Lua.NET</PackageId>
-    <Version>3.0.0</Version>
+    <Version>4.0.0</Version>
     <Authors>Cody Tilkins</Authors>
     <Copyright>Copyright © Cody Tilkins 2023</Copyright>
     <Title>Lua.NET</Title>
@@ -13,18 +14,24 @@
     <PackageIcon>Lua.NET.Logo.png</PackageIcon>
     <PackageIconUrl>https://raw.githubusercontent.com/tilkinsc/Lua.NET/main/Lua.NET.Logo.png</PackageIconUrl>
     <PackageTags>Lua LuaJIT</PackageTags>
-    <Description>Lua.NET is full bindings to Lua and LuaJIT</Description>
+    <Description>Lua.NET contains full bindings to Lua5.1.5, Lua5.2.4, Lua5.3.6, Lua.5.4.6 and LuaJIT</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <RepositoryUrl>https://github.com/tilkinsc/Lua.NET</RepositoryUrl> 
-    <RepositoryType>git</RepositoryType> 
+    <RepositoryType>git</RepositoryType>
+    <NoWarn>CS8981</NoWarn>
   </PropertyGroup>
   
   <ItemGroup>
     <None Include="README.md" Pack="true" PackagePath="\" />
     <None Include="LICENSE" Pack="true" PackagePath="\" />
     <None Include="Lua.NET.Logo.png" Pack="true" PackagePath="\" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Content Include="native/win-x64/*.dll" Pack="true" PackagePath="native\win-x64" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="native/linux-x64/*.dll" Pack="true" PackagePath="native\linux-x64" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
   
 </Project>
