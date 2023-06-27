@@ -23,7 +23,7 @@ public struct lua_KContext
 public static class Lua
 {
 	
-	private const string DllName = "Lua544.dll";
+	private const string DllName = "Lua546.dll";
 	private const CallingConvention Convention = CallingConvention.Cdecl;
 	
 	[StructLayout(LayoutKind.Sequential, Pack = 1, CharSet = CharSet.Ansi)]
@@ -71,6 +71,8 @@ public static class Lua
 	public delegate voidp lua_Alloc(lua_State ud, voidp ptr, size_t osize, size_t nsize);
 	public delegate void lua_WarnFunction(voidp ud, string msg, int tocont);
 	public delegate void lua_Hook(lua_State L, lua_Debug ar);
+	
+	public static unsafe luaL_Reg AsLuaLReg(string name, delegate*unmanaged<lua_State, int> func) => new luaL_Reg { name  = name, func = (nint) func };
 	
 	public const int LUAI_IS32INT = 1;
 	
@@ -120,14 +122,14 @@ public static class Lua
 	
 	public const string LUA_VERSION_MAJOR = "5";
 	public const string LUA_VERSION_MINOR = "4";
-	public const string LUA_VERSION_RELEASE = "4";
+	public const string LUA_VERSION_RELEASE = "6";
 	
 	public const int LUA_VERSION_NUM = 504;
-	public const int LUA_VERSION_RELEASE_NUM = LUA_VERSION_NUM * 100 + 4;
+	public const int LUA_VERSION_RELEASE_NUM = LUA_VERSION_NUM * 100 + 6;
 	
 	public const string LUA_VERSION = "Lua " + LUA_VERSION_MAJOR + "." + LUA_VERSION_MINOR;
 	public const string LUA_RELEASE = LUA_VERSION + "." + LUA_VERSION_RELEASE;
-	public const string LUA_COPYRIGHT = LUA_RELEASE + "  Copyright (C) 1994-2022 Lua.org, PUC-Rio";
+	public const string LUA_COPYRIGHT = LUA_RELEASE + "  Copyright (C) 1994-2023 Lua.org, PUC-Rio";
 	public const string LUA_AUTHORS = "R. Ierusalimschy, L. H. de Figueiredo, W. Celes";
 	
 	public const string LUA_SIGNATURE = "\x1bLua";
@@ -181,7 +183,10 @@ public static class Lua
 	public static extern lua_State lua_newthread(lua_State L);
 	
 	[DllImport(DllName, CallingConvention = Convention)]
-	public static extern int lua_resetthread(lua_State L);
+	public static extern int lua_closethread(lua_State L, lua_State from);
+	
+	[DllImport(DllName, CallingConvention = Convention)]
+	public static extern int lua_resetthread(lua_State L); // deprecated
 	
 	[DllImport(DllName, CallingConvention = Convention, EntryPoint = "lua_atpanic")]
 	public static extern charp _lua_atpanic(lua_State L, charp panicf);

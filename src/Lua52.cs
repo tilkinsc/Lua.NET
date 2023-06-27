@@ -62,6 +62,8 @@ public static class Lua
 	public delegate voidp lua_Alloc(voidp ud, voidp ptr, size_t osize, size_t nsize);
 	public delegate void lua_Hook(lua_State L, lua_Debug ar);
 	
+	public static unsafe luaL_Reg AsLuaLReg(string name, delegate*unmanaged<lua_State, int> func) => new luaL_Reg { name  = name, func = (nint) func };
+	
 	public const string LUA_LDIR = "!\\lua\\";
 	public const string LUA_CDIR = "!\\";
 	public const string LUA_PATH_DEFAULT = LUA_LDIR + "?.lua;" + LUA_LDIR + "?\\init.lua;" + LUA_CDIR + "?.lua;" + LUA_CDIR + "?\\init.lua;" + ".\\?.lua";

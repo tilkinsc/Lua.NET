@@ -38,8 +38,8 @@ public static class Lua
 	
 	[StructLayout(LayoutKind.Sequential, Pack = 1, CharSet = CharSet.Ansi)]
 	public struct luaL_Reg {
-		string name;
-		charp func;
+		public string name;
+		public charp func;
 	};
 	
 	[StructLayout(LayoutKind.Sequential, Pack = 1, CharSet = CharSet.Ansi)]
@@ -56,6 +56,8 @@ public static class Lua
 	public delegate int lua_Writer(lua_State L, voidp p, size_t sz, voidp ud);
 	public delegate voidp lua_Alloc(voidp ud, voidp ptr, size_t osize, size_t nsize);
 	public delegate void lua_Hook(lua_State L, lua_Debug ar);
+	
+	public static unsafe luaL_Reg AsLuaLReg(string name, delegate*unmanaged<lua_State, int> func) => new luaL_Reg { name  = name, func = (nint) func };
 	
 	public const string LUA_PATH = "LUA_PATH";
 	public const string LUA_CPATH = "LUA_CPATH";

@@ -64,6 +64,8 @@ public static class Lua
 	public delegate voidp lua_Alloc(voidp ud, voidp ptr, size_t osize, size_t nsize);
 	public delegate void lua_Hook(lua_State L, lua_Debug ar);
 	
+	public static unsafe luaL_Reg AsLuaLReg(string name, delegate*unmanaged<lua_State, int> func) => new luaL_Reg { name  = name, func = (nint) func };
+	
 	public const int LUAI_BITSINT = 32;
 	
 	public const int LUA_INT_INT = 1;
