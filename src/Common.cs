@@ -45,23 +45,23 @@ public static class Imports
 	{
 		switch (libName)
 		{
-			case "lua51.dll":
+			case "lua51":
 				if (_libHandle_luajit != 0)
 					return _libHandle_luajit;
 				return Resolve(libName, out _libHandle_luajit);
-			case "lua546.dll":
+			case "lua546":
 				if (_libHandle_lua54 != 0)
 					return _libHandle_lua54;
 				return Resolve(libName, out _libHandle_lua54);
-			case "lua515.dll":
+			case "lua515":
 				if (_libHandle_lua51 != 0)
 					return _libHandle_lua51;
 				return Resolve(libName, out _libHandle_lua51);
-			case "lua536.dll":
+			case "lua536":
 				if (_libHandle_lua53 != 0)
 					return _libHandle_lua53;
 				return Resolve(libName, out _libHandle_lua53);
-			case "lua524.dll":
+			case "lua524":
 				if (_libHandle_lua52 != 0)
 					return _libHandle_lua52;
 				return Resolve(libName, out _libHandle_lua52);
