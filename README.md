@@ -1,7 +1,8 @@
 # Lua.NET
 ![Logo](https://raw.githubusercontent.com/tilkinsc/Lua.NET/main/Lua.NET.Logo.png)
 
-C# .NET Core 7.0 Lua bindings and helper functions.
+C# .NET Core 7.0
+Lua.NET contains full bindings to Lua5.1.5, Lua5.2.4, Lua5.3.6, Lua.5.4.6 and LuaJIT
 
 https://github.com/tilkinsc/Lua.NET  
 Copyright © Cody Tilkins 2022 MIT License  
@@ -24,7 +25,7 @@ C# is liable to GC your delegates otherwise.
 
 # Examples
 
-Example Usage Lua5.4.4:
+Example Usage Lua5.4.6:
 ```C#
 // test1.csproj
 // <PropertyGroup>
@@ -114,6 +115,10 @@ Example Usage NativeAOT DLL Library:
 //     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 //     <PublishAot>true</PublishAot>
 // </PropertyGroup>
+//
+// dotnet publish -r win-x64 -c Release
+// This will emit test3.dll inside of bin/.../native and bin/.../publish
+// I use the publish one
 
 using System.Runtime.InteropServices;
 using LuaJIT;
@@ -157,7 +162,7 @@ using static LuaJIT.Lua;
 
 namespace test4;
 
-public class Test1
+public class Test4
 {
 	
 	public static void Main(string[] args)
