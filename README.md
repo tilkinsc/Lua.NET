@@ -8,17 +8,10 @@ Copyright © Cody Tilkins 2022 MIT License
 
 Supports Lua5.4 Lua5.3 Lua5.2 Lua5.1 and LuaJIT  
 
-Hardcoded to only use doubles and 64-bit integers, so the Lua library will have to be built accordingly.
+Hardcoded to only use doubles and 64-bit integers.
 This CAN be changed with manual edits, but it wasn't fun writing this library.
-This code was made with with the default includes on a 64-bit windows 10 machine using Lua's makefile and LuaJIT.
-All DLL's are named differently, make sure the name of the Lua dll matches that of the .cs file; will make it easier in the future and provide the DLLs for you.
-```
-Lua5.4 - lua544.dll
-Lua5.3 - lua536.dll
-Lua5.2 - lua524.dll
-Lua5.1 - lua515.dll
-LuaJIT - lua51.dll
-```
+This code was made with with the default includes on a 64-bit windows 10 machine using Lua's and LuaJIT's makefiles.
+No DLL has to be built for this library as its included for you.
 
 Custom DLLs are supported as long as they don't change any call arguments or return values.
 
