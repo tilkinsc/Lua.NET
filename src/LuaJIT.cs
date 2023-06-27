@@ -91,7 +91,7 @@ public static class Lua
 	public static extern void luaJIT_profile_stop(lua_State L);
 	
 	[DllImport(DllName, CallingConvention = Convention, EntryPoint = "luaJIT_profile_dumpstack")]
-	public static extern nint _luaJIT_profile_dumpstack(lua_State L, string fmt, int depth, ref size_t len);
+	private static extern nint _luaJIT_profile_dumpstack(lua_State L, string fmt, int depth, ref size_t len);
 	public static string? luaJIT_profile_dumpstack(lua_State L, string fmt, int depth, ref size_t len)
 	{
 		return Marshal.PtrToStringAnsi(_luaJIT_profile_dumpstack(L, fmt, depth, ref len));
@@ -174,7 +174,7 @@ public static class Lua
 	public const int LUA_MINSTACK = 20;
 	
 	[DllImport(DllName, CallingConvention = Convention, EntryPoint = "lua_newstate")]
-	public static extern lua_State _lua_newstate(nint f, nuint ud);
+	private static extern lua_State _lua_newstate(nint f, nuint ud);
 	public static lua_State lua_newstate(lua_Alloc? f, nuint ud)
 	{
 		return _lua_newstate(f == null ? ((nint) 0) : Marshal.GetFunctionPointerForDelegate<lua_Alloc>(f), ud);
@@ -187,7 +187,7 @@ public static class Lua
 	public static extern lua_State lua_newthread(lua_State L);
 	
 	[DllImport(DllName, CallingConvention = Convention, EntryPoint = "lua_atpanic")]
-	public static extern nint _lua_atpanic(lua_State L, nint panicf);
+	private static extern nint _lua_atpanic(lua_State L, nint panicf);
 	public static lua_CFunction? lua_atpanic(lua_State L, lua_CFunction? panicf)
 	{
 		nint panic = _lua_atpanic(L, panicf == null ? ((nint) 0) : Marshal.GetFunctionPointerForDelegate<lua_CFunction>(panicf));
@@ -234,7 +234,7 @@ public static class Lua
 	public static extern int lua_type(lua_State L, int idx);
 	
 	[DllImport(DllName, CallingConvention = Convention, EntryPoint = "lua_typename")]
-	public static extern nint _lua_typename(lua_State L, int tp);
+	private static extern nint _lua_typename(lua_State L, int tp);
 	public static string? lua_typename(lua_State L, int tp)
 	{
 		return Marshal.PtrToStringAnsi(_lua_typename(L, tp));
@@ -259,7 +259,7 @@ public static class Lua
 	public static extern int lua_toboolean(lua_State L, int idx);
 	
 	[DllImport(DllName, CallingConvention = Convention, EntryPoint = "lua_tolstring")]
-	public static extern nint _lua_tolstring(lua_State L, int idx, ref ulong len);
+	private static extern nint _lua_tolstring(lua_State L, int idx, ref ulong len);
 	public static string? lua_tolstring(lua_State L, int idx, ref ulong len)
 	{
 		return Marshal.PtrToStringAnsi(_lua_tolstring(L, idx, ref len));
@@ -269,7 +269,7 @@ public static class Lua
 	public static extern ulong lua_objlen(lua_State L, int idx);
 	
 	[DllImport(DllName, CallingConvention = Convention, EntryPoint = "lua_tocfunction")]
-	public static extern nint _lua_tocfunction(lua_State L, int idx);
+	private static extern nint _lua_tocfunction(lua_State L, int idx);
 	public static lua_CFunction? lua_tocfunction(lua_State L, int idx)
 	{
 		nint ret = _lua_tocfunction(L, idx);
@@ -306,14 +306,14 @@ public static class Lua
 	
 	// TODO:
 	// [DllImport(DllName, CallingConvention = Convention, EntryPoint = "lua_pushfstring")]
-	// public static extern nint _lua_pushfstring(lua_State L, string fmt, params string[] args);
+	// private static extern nint _lua_pushfstring(lua_State L, string fmt, params string[] args);
 	// public static string? lua_pushfstring(lua_State L, string fmt, params string[] args)
 	// {
 	// 	return Marshal.PtrToStringAnsi(_lua_pushfstring(L, fmt, args));
 	// }
 	
 	[DllImport(DllName, CallingConvention = Convention, EntryPoint = "lua_pushcclosure")]
-	public static extern void _lua_pushcclosure(lua_State L, nint fn, int n);
+	private static extern void _lua_pushcclosure(lua_State L, nint fn, int n);
 	public static void lua_pushcclosure(lua_State L, lua_CFunction? fn, int n)
 	{
 		_lua_pushcclosure(L, fn == null ? ((nint) 0) : Marshal.GetFunctionPointerForDelegate(fn), n);
@@ -377,21 +377,21 @@ public static class Lua
 	public static extern int lua_pcall(lua_State L, int nargs, int nresults, int errfunc);
 	
 	[DllImport(DllName, CallingConvention = Convention, EntryPoint = "lua_cpcall")]
-	public static extern int _lua_cpcall(lua_State L, nint func, nuint ud);
+	private static extern int _lua_cpcall(lua_State L, nint func, nuint ud);
 	public static int lua_cpcall(lua_State L, lua_CFunction? func, nuint ud)
 	{
 		return _lua_cpcall(L, func == null ? ((nint) 0) : Marshal.GetFunctionPointerForDelegate<lua_CFunction>(func), ud);
 	}
 	
 	[DllImport(DllName, CallingConvention = Convention, EntryPoint = "lua_load")]
-	public static extern int _lua_load(lua_State L, nint reader, nuint dt, string chunkname);
+	private static extern int _lua_load(lua_State L, nint reader, nuint dt, string chunkname);
 	public static int lua_load(lua_State L, lua_Reader? reader, nuint dt, string chunkname)
 	{
 		return _lua_load(L, reader == null ? ((nint) 0) : Marshal.GetFunctionPointerForDelegate<lua_Reader>(reader), dt, chunkname);
 	}
 	
 	[DllImport(DllName, CallingConvention = Convention, EntryPoint = "lua_dump")]
-	public static extern int _lua_dump(lua_State L, nint writer, nuint data);
+	private static extern int _lua_dump(lua_State L, nint writer, nuint data);
 	public static int lua_dump(lua_State L, lua_Writer? writer, nuint data)
 	{
 		return _lua_dump(L, writer == null ? ((nint) 0) : Marshal.GetFunctionPointerForDelegate<lua_Writer>(writer), data);
@@ -432,7 +432,7 @@ public static class Lua
 	public static extern lua_Alloc lua_getallocf(lua_State L, out nuint ud);
 	
 	[DllImport(DllName, CallingConvention = Convention, EntryPoint = "lua_setallocf")]
-	public static extern void _lua_setallocf(lua_State L, nint f, nuint ud);
+	private static extern void _lua_setallocf(lua_State L, nint f, nuint ud);
 	public static void lua_setallocf(lua_State L, lua_Alloc? f, nuint ud)
 	{
 		_lua_setallocf(L, f == null ? ((nint) 0) : Marshal.GetFunctionPointerForDelegate<lua_Alloc>(f), ud);
@@ -561,42 +561,42 @@ public static class Lua
 	public static extern int lua_getinfo(lua_State L, string what, lua_Debug ar);
 	
 	[DllImport(DllName, CallingConvention = Convention, EntryPoint = "lua_getlocal")]
-	public static extern nint _lua_getlocal(lua_State L, lua_Debug ar, int n);
+	private static extern nint _lua_getlocal(lua_State L, lua_Debug ar, int n);
 	public static string? lua_getlocal(lua_State L, lua_Debug ar, int n)
 	{
 		return Marshal.PtrToStringAnsi(_lua_getlocal(L, ar, n));
 	}
 	
 	[DllImport(DllName, CallingConvention = Convention, EntryPoint = "lua_setlocal")]
-	public static extern nint _lua_setlocal(lua_State L, lua_Debug ar, int n);
+	private static extern nint _lua_setlocal(lua_State L, lua_Debug ar, int n);
 	public static string? lua_setlocal(lua_State L, lua_Debug ar, int n)
 	{
 		return Marshal.PtrToStringAnsi(_lua_setlocal(L, ar, n));
 	}
 	
 	[DllImport(DllName, CallingConvention = Convention, EntryPoint = "lua_getupvalue")]
-	public static extern nint _lua_getupvalue(lua_State L, int funcindex, int n);
+	private static extern nint _lua_getupvalue(lua_State L, int funcindex, int n);
 	public static string? lua_getupvalue(lua_State L, int funcindex, int n)
 	{
 		return Marshal.PtrToStringAnsi(_lua_getupvalue(L, funcindex, n));
 	}
 	
 	[DllImport(DllName, CallingConvention = Convention, EntryPoint = "lua_setupvalue")]
-	public static extern nint _lua_setupvalue(lua_State L, int funcindex, int n);
+	private static extern nint _lua_setupvalue(lua_State L, int funcindex, int n);
 	public static string? lua_setupvalue(lua_State L, int funcindex, int n)
 	{
 		return Marshal.PtrToStringAnsi(_lua_setupvalue(L, funcindex, n));
 	}
 	
 	[DllImport(DllName, CallingConvention = Convention, EntryPoint = "lua_sethook")]
-	public static extern int _lua_sethook(lua_State L, nint func, int mask, int count);
+	private static extern int _lua_sethook(lua_State L, nint func, int mask, int count);
 	public static int lua_sethook(lua_State L, lua_Hook? func, int mask, int count)
 	{
 		return _lua_sethook(L, func == null ? ((nint) 0) : Marshal.GetFunctionPointerForDelegate<lua_Hook>(func), mask, count);
 	}
 	
 	[DllImport(DllName, CallingConvention = Convention, EntryPoint = "lua_gethook")]
-	public static extern nint _lua_gethook(lua_State L);
+	private static extern nint _lua_gethook(lua_State L);
 	public static lua_Hook? lua_gethook(lua_State L)
 	{
 		nint ret = _lua_gethook(L);
@@ -616,14 +616,14 @@ public static class Lua
 	public static extern void lua_upvaluejoin(lua_State L, int idx1, int n1, int idx2, int n2);
 	
 	[DllImport(DllName, CallingConvention = Convention, EntryPoint = "lua_loadx")]
-	public static extern int _lua_loadx(lua_State L, nint reader, nuint dt, string chunkname, string? mode);
+	private static extern int _lua_loadx(lua_State L, nint reader, nuint dt, string chunkname, string? mode);
 	public static int lua_loadx(lua_State L, lua_Reader? reader, nuint dt, string chunkname, string? mode)
 	{
 		return _lua_loadx(L, reader == null ? ((nint) 0) : Marshal.GetFunctionPointerForDelegate<lua_Reader>(reader), dt, chunkname, mode);
 	}
 	
 	[DllImport(DllName, CallingConvention = Convention, EntryPoint = "lua_version")]
-	public static extern nint _lua_version(lua_State L);
+	private static extern nint _lua_version(lua_State L);
 	public static double lua_version(lua_State L)
 	{
 		nint mem = _lua_version(L);
@@ -668,14 +668,14 @@ public static class Lua
 	public static extern int luaL_argerror(lua_State L, int numarg, string extramsg);
 	
 	[DllImport(DllName, CallingConvention = Convention, EntryPoint = "luaL_checklstring")]
-	public static extern nint _luaL_checklstring(lua_State L, int numArg, ref size_t l);
+	private static extern nint _luaL_checklstring(lua_State L, int numArg, ref size_t l);
 	public static string? luaL_checklstring(lua_State L, int numArg, ref size_t l)
 	{
 		return Marshal.PtrToStringAnsi(_luaL_checklstring(L, numArg, ref l));
 	}
 	
 	[DllImport(DllName, CallingConvention = Convention, EntryPoint = "luaL_optlstring")]
-	public static extern nint _luaL_optlstring(lua_State L, int numArg, string def, ref size_t l);
+	private static extern nint _luaL_optlstring(lua_State L, int numArg, string def, ref size_t l);
 	public static string? luaL_optlstring(lua_State L, int numArg, string def, ref size_t l)
 	{
 		return Marshal.PtrToStringAnsi(_luaL_optlstring(L, numArg, def, ref l));
@@ -740,14 +740,14 @@ public static class Lua
 	public static extern lua_State luaL_newstate();
 	
 	[DllImport(DllName, CallingConvention = Convention, EntryPoint = "luaL_gsub")]
-	public static extern nint _luaL_gsub(lua_State L, string s, string p, string r);
+	private static extern nint _luaL_gsub(lua_State L, string s, string p, string r);
 	public static string? luaL_gsub(lua_State L, string s, string p, string r)
 	{
 		return Marshal.PtrToStringAnsi(_luaL_gsub(L, s, p, r));
 	}
 	
 	[DllImport(DllName, CallingConvention = Convention, EntryPoint = "luaL_findtable")]
-	public static extern nint _luaL_findtable(lua_State L, int idx, string fname, int szhint);
+	private static extern nint _luaL_findtable(lua_State L, int idx, string fname, int szhint);
 	public static string? luaL_findtable(lua_State L, int idx, string fname, int szhint)
 	{
 		return Marshal.PtrToStringAnsi(_luaL_findtable(L, idx, fname, szhint));

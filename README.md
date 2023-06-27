@@ -1,7 +1,8 @@
 # Lua.NET
 ![Logo](https://raw.githubusercontent.com/tilkinsc/Lua.NET/main/Lua.NET.Logo.png)
 
-C# .NET Core 7.0 Lua bindings and helper functions.
+C# .NET Core 7.0
+Lua.NET contains full bindings to Lua5.1.5, Lua5.2.4, Lua5.3.6, Lua.5.4.6 and LuaJIT
 
 https://github.com/tilkinsc/Lua.NET  
 Copyright © Cody Tilkins 2022 MIT License  
@@ -15,12 +16,6 @@ No DLL has to be built for this library as its included for you.
 
 Custom DLLs are supported as long as they don't change any call arguments or return values.
 
-To build Lua, get the Lua source from [Lua.org](https://www.lua.org/download.html) or [LuaJIT](https://luajit.org/download.html).
-```bat
-make -j24
-```
-Then rename the dll to the above convention.
-
 # Design Considerations / Usage
 
 Your delegates you pass to functions such as `lua_pushcfunction(...)` should be static.
@@ -28,17 +23,9 @@ If you do not use static, then the lifetime of your functions should exceed the 
 Do not use lambdas.
 C# is liable to GC your delegates otherwise.
 
-There are functions prefixed with an underscore.
-These functions denote raw DllImported functions.
-The reason these exist is because some functions needed a shim function for it to work properly/sanely, i.e. marshaling.
-You can write your own functions against those.
-For example, if you want a function like lua_pcall but not have to specify an error handler offset you can invoke _lua_pcall(...) in a util class (all functions are static).
-This library does not use unsafe, however, going unsafe should work perfectly.
-If you are just here to use the library, you can get by without having to worry about the underscore prefixed functions.
-
 # Examples
 
-Example Usage Lua5.4.4:
+Example Usage Lua5.4.6:
 ```C#
 // test1.csproj
 // <PropertyGroup>
@@ -128,6 +115,10 @@ Example Usage NativeAOT DLL Library:
 //     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 //     <PublishAot>true</PublishAot>
 // </PropertyGroup>
+//
+// dotnet publish -r win-x64 -c Release
+// This will emit test3.dll inside of bin/.../native and bin/.../publish
+// I use the publish one
 
 using System.Runtime.InteropServices;
 using LuaJIT;
@@ -171,7 +162,7 @@ using static LuaJIT.Lua;
 
 namespace test4;
 
-public class Test1
+public class Test4
 {
 	
 	public static void Main(string[] args)
