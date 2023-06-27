@@ -6,36 +6,68 @@ namespace LuaNET;
 public static class Imports
 {
 	
-	internal static nint ImportResolver(string libName, Assembly assembly, DllImportSearchPath? searchPath)
+	private static nint _libHandle_luajit = (nint) 0;
+	private static nint _libHandle_lua51 = (nint) 0;
+	private static nint _libHandle_lua52 = (nint) 0;
+	private static nint _libHandle_lua53 = (nint) 0;
+	private static nint _libHandle_lua54 = (nint) 0;
+	
+	private static nint Resolve(string libName, out nint handle)
 	{
-		nint libHandle = (nint) 0;
-		if (libName != "lua51" && libName != "lua515" && libName != "lua524" && libName != "lua536" && libName != "lua546")
-			return libHandle;
-		
+		handle = (nint) 0;
 		if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
 		{
 			if (Environment.Is64BitProcess)
 			{
-				NativeLibrary.TryLoad($"./native/win-x64/{libName}.dll", out libHandle);
+				NativeLibrary.TryLoad($"./native/win-x64/{libName}.dll", out handle);
 			}
 			else
 			{
-				NativeLibrary.TryLoad($"./native/win-x86/{libName}.dll", out libHandle);
+				NativeLibrary.TryLoad($"./native/win-x86/{libName}.dll", out handle);
 			}
 		}
 		else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
 		{
-			NativeLibrary.TryLoad($"./native/linux-x64/{libName}.so", out libHandle);
+			NativeLibrary.TryLoad($"./native/linux-x64/{libName}.so", out handle);
 		}
 		else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
 		{
-			NativeLibrary.TryLoad($"./native/macos-x64/{libName}.dylib", out libHandle);
+			NativeLibrary.TryLoad($"./native/macos-x64/{libName}.dylib", out handle);
 		}
 		else if (RuntimeInformation.IsOSPlatform(OSPlatform.FreeBSD))
 		{
-			NativeLibrary.TryLoad($"./native/freebsd-x64/{libName}.so", out libHandle);
+			NativeLibrary.TryLoad($"./native/freebsd-x64/{libName}.so", out handle);
 		}
-		return libHandle;
+		return handle;
+	}
+	
+	internal static nint ImportResolver(string libName, Assembly assembly, DllImportSearchPath? searchPath)
+	{
+		switch (libName)
+		{
+			case "lua51.dll":
+				if (_libHandle_luajit != 0)
+					return _libHandle_luajit;
+				return Resolve(libName, out _libHandle_luajit);
+			case "lua546.dll":
+				if (_libHandle_lua54 != 0)
+					return _libHandle_lua54;
+				return Resolve(libName, out _libHandle_lua54);
+			case "lua515.dll":
+				if (_libHandle_lua51 != 0)
+					return _libHandle_lua51;
+				return Resolve(libName, out _libHandle_lua51);
+			case "lua536.dll":
+				if (_libHandle_lua53 != 0)
+					return _libHandle_lua53;
+				return Resolve(libName, out _libHandle_lua53);
+			case "lua524.dll":
+				if (_libHandle_lua52 != 0)
+					return _libHandle_lua52;
+				return Resolve(libName, out _libHandle_lua52);
+		}
+		
+		return (nint) 0;
 	}
 	
 }

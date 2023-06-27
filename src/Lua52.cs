@@ -16,7 +16,7 @@ public struct lua_State
 public static class Lua
 {
 	
-	private const string DllName = "Lua524.dll";
+	private const string DllName = "Lua524";
 	private const CallingConvention Convention = CallingConvention.Cdecl;
 	
 	[StructLayout(LayoutKind.Sequential, Pack = 1, CharSet = CharSet.Ansi)]
