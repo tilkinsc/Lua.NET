@@ -32,8 +32,8 @@ Example Usage Lua5.4.6:
 //     ...
 //     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 // </PropertyGroup>
-using Lua54;
-using static Lua54.Lua;
+using LuaNET.Lua54;
+using static LuaNET.Lua54.Lua;
 
 namespace TestLua;
 
@@ -73,8 +73,8 @@ Example Usage LuaJIT:
 //     ...
 //     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 // </PropertyGroup>
-using LuaJIT;
-using static LuaJIT.Lua;
+using LuaNET.LuaJIT;
+using static LuaNET.LuaJIT.Lua;
 
 namespace TestLua;
 
@@ -121,8 +121,8 @@ Example Usage NativeAOT DLL Library:
 // I use the publish one
 
 using System.Runtime.InteropServices;
-using LuaJIT;
-using static LuaJIT.Lua;
+using LuaNET.LuaJIT;
+using static LuaNET.LuaJIT.Lua;
 
 namespace TestLua;
 
@@ -157,8 +157,8 @@ public unsafe class Test3
 //     ...
 //     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 // </PropertyGroup>
-using LuaJIT;
-using static LuaJIT.Lua;
+using LuaNET.LuaJIT;
+using static LuaNET.LuaJIT.Lua;
 
 namespace test4;
 
