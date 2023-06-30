@@ -1,12 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net7.0;net7.0-windows;net6.0;net6.0-windows</TargetFrameworks>
+    <TargetFrameworks>net7.0;net6.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Nullable>enable</Nullable>
 	  <PackageId>Lua.NET</PackageId>
-    <Version>4.0.0</Version>
+    <Version>4.0.1</Version>
     <Authors>Cody Tilkins</Authors>
     <Copyright>Copyright © Cody Tilkins 2023</Copyright>
     <Title>Lua.NET</Title>
@@ -30,8 +30,14 @@
   </ItemGroup>
   
   <ItemGroup>
-    <Content Include="native/win-x64/*.dll" Pack="true" PackagePath="native\win-x64" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="native/linux-x64/*.dll" Pack="true" PackagePath="native\linux-x64" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="native/win-x64/*.dll" Pack="true" PackagePath="runtimes/net6.0/native/win-x64" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="native/linux-x64/*.dll" Pack="true" PackagePath="runtimes/net6.0/native/linux-x64" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="native/win-x64/*.dll" Pack="true" PackagePath="runtimes/net6.0-windows/native/win-x64" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="native/linux-x64/*.dll" Pack="true" PackagePath="runtimes/net6.0-windows/native/linux-x64" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="native/win-x64/*.dll" Pack="true" PackagePath="runtimes/net7.0/native/win-x64" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="native/linux-x64/*.dll" Pack="true" PackagePath="runtimes/net7.0/native/linux-x64" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="native/win-x64/*.dll" Pack="true" PackagePath="runtimes/net7.0-windows/native/win-x64" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="native/linux-x64/*.dll" Pack="true" PackagePath="runtimes/net7.0-windows/native/linux-x64" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
   
 </Project>

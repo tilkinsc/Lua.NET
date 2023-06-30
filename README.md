@@ -5,7 +5,7 @@ C# .NET Core 7.0
 Lua.NET contains full bindings to Lua5.1.5, Lua5.2.4, Lua5.3.6, Lua.5.4.6 and LuaJIT
 
 https://github.com/tilkinsc/Lua.NET  
-Copyright © Cody Tilkins 2022 MIT License  
+Copyright © Cody Tilkins 2023 MIT License  
 
 Supports Lua5.4 Lua5.3 Lua5.2 Lua5.1 and LuaJIT  
 

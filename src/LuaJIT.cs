@@ -14,13 +14,8 @@ public struct lua_State
 
 public static class Lua
 {
-	private const string DllName = "lua51";
+	private const string DllName = "C:/code/Lua.NET.Test/bin/Debug/net7.0/runtimes/net7.0/native/win-x64/lua51.dll";
 	private const CallingConvention Convention = CallingConvention.Cdecl;
-	
-	static Lua()
-	{
-		NativeLibrary.SetDllImportResolver(typeof(Lua).Assembly, Imports.ImportResolver);
-	}
 	
 	[StructLayout(LayoutKind.Sequential, Pack = 1, CharSet = CharSet.Ansi)]
 	public struct lua_Debug {
