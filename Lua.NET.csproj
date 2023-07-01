@@ -26,12 +26,13 @@
   <ItemGroup>
     <None Include="README.md" Pack="true" PackagePath="\" />
     <None Include="LICENSE" Pack="true" PackagePath="\" />
+    <None Include="LUA_COPYRIGHT" Pack="true" PackagePath="\" />
     <None Include="Lua.NET.Logo.png" Pack="true" PackagePath="\" />
   </ItemGroup>
   
   <ItemGroup>
-    <Content Include="native/win-x64/*" Pack="true" PackagePath="runtimes/win-x64/native/net7.0" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="native/linux-x64/*" Pack="true" PackagePath="runtimes/linux-x64/native/net7.0" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="native/win-x64/*" Pack="true" PackagePath="runtimes/win-x64/native" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="native/linux-x64/*" Pack="true" PackagePath="runtimes/linux-x64/native" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
   
 </Project>
