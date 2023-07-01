@@ -30,14 +30,8 @@
   </ItemGroup>
   
   <ItemGroup>
-    <Content Include="native/win-x64/*.dll" Pack="true" PackagePath="runtimes/net6.0/native/win-x64" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="native/linux-x64/*.dll" Pack="true" PackagePath="runtimes/net6.0/native/linux-x64" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="native/win-x64/*.dll" Pack="true" PackagePath="runtimes/net6.0-windows/native/win-x64" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="native/linux-x64/*.dll" Pack="true" PackagePath="runtimes/net6.0-windows/native/linux-x64" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="native/win-x64/*.dll" Pack="true" PackagePath="runtimes/net7.0/native/win-x64" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="native/linux-x64/*.dll" Pack="true" PackagePath="runtimes/net7.0/native/linux-x64" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="native/win-x64/*.dll" Pack="true" PackagePath="runtimes/net7.0-windows/native/win-x64" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="native/linux-x64/*.dll" Pack="true" PackagePath="runtimes/net7.0-windows/native/linux-x64" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="native/win-x64/*" Pack="true" PackagePath="runtimes/win-x64/native/net7.0" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="native/linux-x64/*" Pack="true" PackagePath="runtimes/linux-x64/native/net7.0" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
   
 </Project>
