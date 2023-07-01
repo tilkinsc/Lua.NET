@@ -17,11 +17,6 @@ public static class Lua
 	private const string DllName = "lua51";
 	private const CallingConvention Convention = CallingConvention.Cdecl;
 	
-	static Lua()
-	{
-		NativeLibrary.SetDllImportResolver(typeof(Lua).Assembly, Imports.ImportResolver);
-	}
-	
 	[StructLayout(LayoutKind.Sequential, Pack = 1, CharSet = CharSet.Ansi)]
 	public struct lua_Debug {
 		public int _event;
