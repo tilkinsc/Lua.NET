@@ -11,6 +11,37 @@ namespace LuaNET.Lua54;
 public struct lua_State
 {
 	public nuint Handle;
+
+    #region Override Methods
+
+    public bool IsNull() => Handle == 0;
+
+    public bool IsNotNull() => Handle != 0;
+
+    public static bool operator !(lua_State state) => state.IsNull();
+
+    public static bool operator ==(lua_State obj1, lua_State obj2)
+    {
+        if (ReferenceEquals(obj1.Handle, obj2.Handle))
+            return true;
+        if (ReferenceEquals(obj1.Handle, 0))
+            return false;
+        if (ReferenceEquals(obj2.Handle, 0))
+            return false;
+        return obj1.Handle.Equals(obj2.Handle);
+    }
+    public static bool operator !=(lua_State obj1, lua_State obj2) => !(obj1.Handle == obj2.Handle);
+
+    public int GetHashCode()
+    {
+        unchecked
+        {
+            int hashCode = Handle.GetHashCode();
+            return hashCode;
+        }
+    }
+
+    #endregion
 }
 
 public struct lua_KContext
