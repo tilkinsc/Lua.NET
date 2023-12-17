@@ -2,10 +2,13 @@
 
 1. Follow the code style
 ```cs
-if ()
+if (...)
 {
 	
 }
+
+if (...)
+	return;
 
 try
 {
@@ -16,10 +19,17 @@ catch (...)
 	
 }
 
-if (...)
-	return;
-
 for (int i = 0; i<=1; i++)
+{
+	
+}
+
+foreach (Type variable = new Type())
+{
+	
+}
+
+foreach (var variable = new Dictionary<string, string>().keys)
 {
 	
 }
@@ -29,19 +39,19 @@ while (...)
 	
 }
 
-private int _name;
-public int Name;
-public int Name { get; private set; }
-Do not use var.
-
-public void Example(int argName)
+using (...)
 {
 	
 }
 
-using (...)
-{
+private int _name;
+public int Name;
+public int Name { get; private set; }
+Only use var when using foreach with a dictionary's key or value sets.
 
+public void Example(int argName)
+{
+	
 }
 
 ~bit
