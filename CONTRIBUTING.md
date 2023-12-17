@@ -43,3 +43,4 @@ public void Example(int argName)
 3. You are encouraged to start a PR early so we can spy on what you are working on!
 4. Versions should not be bumped at all
 5. gitignore is free game add anything that fits
+6. Do not use #region
