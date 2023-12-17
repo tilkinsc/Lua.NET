@@ -24,12 +24,12 @@ for (int i = 0; i<=1; i++)
 	
 }
 
-foreach (Type variable = new Type())
+foreach (Type variable in new Type())
 {
 	
 }
 
-foreach (var variable = new Dictionary<string, string>().keys)
+foreach (var variable in new Dictionary<string, string>().keys)
 {
 	
 }
