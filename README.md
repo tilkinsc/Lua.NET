@@ -19,7 +19,7 @@ Custom DLLs are supported as long as they don't change any call arguments or ret
 # Design Considerations / Usage
 
 Your delegates you pass to functions such as `lua_pushcfunction(...)` should be static.
-If you do not use static, then the lifetime of your functions should exceed the lifetime of the Lua the final Lua context you create during the course of the program.
+If you do not use static, then the lifetime of your functions should exceed the lifetime of the final lua_State you create during the course of the program.
 Do not use lambdas.
 C# is liable to GC your delegates otherwise.
 
