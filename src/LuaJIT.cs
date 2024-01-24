@@ -15,7 +15,9 @@ public struct lua_State : IEquatable<lua_State>
 	
 	public static bool operator !(lua_State state) => state.Handle == 0;
 	public static bool operator ==(lua_State state1, lua_State state2) => state1.Handle == state2.Handle;
+	public static bool operator ==(lua_State state1, int handle) => state1.Handle == (nuint) handle;
 	public static bool operator !=(lua_State state1, lua_State state2) => state1.Handle != state2.Handle;
+	public static bool operator !=(lua_State state1, int handle) => state1.Handle != (nuint) handle;
 	
 	public readonly bool Equals(lua_State other) => Handle == other.Handle;
 	public override readonly bool Equals(object? other) => other is lua_State state && Equals(state);
