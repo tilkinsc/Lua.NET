@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	
 	<PropertyGroup>
+		<OutputType>Library</OutputType>
 		<TargetFrameworks>net8.0;net7.0;net6.0</TargetFrameworks>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -29,11 +30,8 @@
 		<None Include="LUA_COPYRIGHT" Pack="true" PackagePath="\" />
 		<None Include="LUAJIT_COPYRIGHT" Pack="true" PackagePath="\" />
 		<None Include="Lua.NET.Logo.png" Pack="true" PackagePath="\" />
-	</ItemGroup>
-	
-	<ItemGroup>
-		<Content Include="native/win-x64/*" Pack="true" PackagePath="runtimes/win-x64/native" CopyToOutputDirectory="PreserveNewest" />
-		<Content Include="native/linux-x64/*" Pack="true" PackagePath="runtimes/linux-x64/native" CopyToOutputDirectory="PreserveNewest" />
+		<Content Include="runtimes/win-x64/native/*" Pack="true" PackagePath="runtimes/win-x64/native" CopyToOutputDirectory="PreserveNewest" />
+		<Content Include="runtimes/linux-x64/native/*" Pack="true" PackagePath="runtimes/linux-x64/native" CopyToOutputDirectory="PreserveNewest" />
 	</ItemGroup>
 	
 </Project>
