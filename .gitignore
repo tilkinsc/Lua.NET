@@ -455,6 +455,7 @@ $RECYCLE.BIN/
 !.vscode/extensions.json
 
 ##
-## Local testing
+## Local development
 ##
 lua-all
+luajit
