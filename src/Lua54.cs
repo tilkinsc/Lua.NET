@@ -7,10 +7,20 @@ using lua_Unsigned = System.UInt64;
 
 namespace LuaNET.Lua54;
 
-
-public struct lua_State
+public struct lua_State : IEquatable<lua_State>
 {
 	public nuint Handle;
+	
+	public readonly bool IsNull => Handle == 0;
+	public readonly bool IsNotNull => Handle != 0;
+	
+	public static bool operator !(lua_State state) => state.Handle == 0;
+	public static bool operator ==(lua_State state1, lua_State state2) => state1.Handle == state2.Handle;
+	public static bool operator !=(lua_State state1, lua_State state2) => state1.Handle != state2.Handle;
+	
+	public readonly bool Equals(lua_State other) => Handle == other.Handle;
+	public override readonly bool Equals(object? other) => other is lua_State state && Equals(state);
+	public override readonly int GetHashCode() => Handle.GetHashCode();
 }
 
 public struct lua_KContext
