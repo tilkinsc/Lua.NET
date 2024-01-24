@@ -1,7 +1,7 @@
 # Lua.NET
 ![Logo](https://raw.githubusercontent.com/tilkinsc/Lua.NET/main/Lua.NET.Logo.png)
 
-C# .NET Core 7.0
+C# .NET Core 8.0
 Lua.NET contains full bindings to Lua5.1.5, Lua5.2.4, Lua5.3.6, Lua.5.4.6 and LuaJIT
 
 https://github.com/tilkinsc/Lua.NET  
@@ -9,19 +9,17 @@ Copyright © Cody Tilkins 2023 MIT License
 
 Supports Lua5.4 Lua5.3 Lua5.2 Lua5.1 and LuaJIT  
 
-Hardcoded to only use doubles and 64-bit integers.
-This CAN be changed with manual edits, but it wasn't fun writing this library.
-This code was made with with the default includes on a 64-bit windows 10 machine using Lua's and LuaJIT's makefiles.
-No DLL has to be built for this library as its included for you.
-
-Custom DLLs are supported as long as they don't change any call arguments or return values.
+Hardcoded to only use doubles and 64-bit integers.  
+No DLL has to be built for this library as its included for you.  
+Windows only. Linux is not supported, yet.  
+Custom DLLs are supported when building from source; they must retain backwards compatibility with Lua.  
 
 # Design Considerations / Usage
 
-Your delegates you pass to functions such as `lua_pushcfunction(...)` should be static.
-If you do not use static, then the lifetime of your functions should exceed the lifetime of the Lua the final Lua context you create during the course of the program.
-Do not use lambdas.
-C# is liable to GC your delegates otherwise.
+The delegates you pass to functions such as `lua_pushcfunction(...)` should be static.
+Otherwise, the lifetime of your functions should exceed the lifetime of the lua_State.
+Do not use lambdas, as C# is liable to GC them.
+A system to support lambdas may be added in the future, but it requires tracking lambda references.
 
 # Examples
 
@@ -51,7 +49,7 @@ public class Test1
 	public static void Main(String[] args)
 	{
 		lua_State L = luaL_newstate();
-		if (L.Handle == 0)
+		if (L == 0)
 		{
 			Console.WriteLine("Unable to create context!");
 		}
@@ -92,7 +90,7 @@ public class Test2
 	public static void Main(String[] args)
 	{
 		lua_State L = luaL_newstate();
-		if (L.Handle == 0)
+		if (L == 0)
 		{
 			Console.WriteLine("Unable to create context!");
 		}
@@ -168,7 +166,7 @@ public class Test4
 	public static void Main(string[] args)
 	{
 		lua_State L = luaL_newstate();
-		if (L.Handle == 0)
+		if (L == 0)
 		{
 			Console.WriteLine("Unable to create context!");
 		}
