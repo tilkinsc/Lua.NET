@@ -5,14 +5,11 @@ C# .NET Core 8.0
 Lua.NET contains full bindings to Lua5.1.5, Lua5.2.4, Lua5.3.6, Lua.5.4.6 and LuaJIT
 
 https://github.com/tilkinsc/Lua.NET  
-Copyright © Cody Tilkins 2023 MIT License  
+Copyright © Cody Tilkins 2024 MIT License  
 
 Supports Lua5.4 Lua5.3 Lua5.2 Lua5.1 and LuaJIT  
 
 Hardcoded to only use doubles and 64-bit integers.  
-No DLL has to be built for this library as its included for you.  
-Windows only. Linux is not supported, yet.  
-Custom DLLs are supported when building from source; they must retain backwards compatibility with Lua.  
 
 # Design Considerations / Usage
 
@@ -20,6 +17,12 @@ The delegates you pass to functions such as `lua_pushcfunction(...)` should be s
 Otherwise, the lifetime of your functions should exceed the lifetime of the lua_State.
 Do not use lambdas, as C# is liable to GC them.
 A system to support lambdas may be added in the future, but it requires tracking lambda references.
+
+# Shared Libraries
+
+No shared library has to be built for this library, as its included for you.
+Custom DLLs are supported when building from source; they must retain ABI compatibility with Lua.
+If using custom shared libraries, you will need to replace the repsective shared library Nuget gives you locally in your project in `bin/{configuration}/{target}/runtimes/{platform-rid}/native`. The name must be the same as the one you are replacing. The ideal way to handle this is by rolling your own nuget package clone of this repository. The reason for this is a shortcoming of runtime dlls not being copied over in project references (as opposed to package reference from nuget). All of this can be avoided if you change the DllName inside the respective source, however, that solution adds complexity to your project. Nuget packages are easy.
 
 # Examples
 
