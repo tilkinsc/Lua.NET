@@ -33,7 +33,7 @@ public struct lua_KContext
 public static class Lua
 {
 	
-	private const string DllName = "Lua546";
+	private const string DllName = "lua546";
 	private const CallingConvention Convention = CallingConvention.Cdecl;
 	
 	[StructLayout(LayoutKind.Sequential, Pack = 1, CharSet = CharSet.Ansi)]
