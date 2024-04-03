@@ -46,7 +46,7 @@ public class Test1
 		return 0;
 	}
 	
-	public static void Main(String[] args)
+	public static void Main(string[] args)
 	{
 		lua_State L = luaL_newstate();
 		if (L == 0)
@@ -87,7 +87,7 @@ public class Test2
 		return 0;
 	}
 	
-	public static void Main(String[] args)
+	public static void Main(string[] args)
 	{
 		lua_State L = luaL_newstate();
 		if (L == 0)
