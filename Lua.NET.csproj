@@ -7,7 +7,7 @@
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<Nullable>enable</Nullable>
 		<PackageId>Lua.NET</PackageId>
-		<Version>5.0.2</Version>
+		<Version>5.0.3</Version>
 		<Authors>Cody Tilkins</Authors>
 		<Copyright>Copyright © Cody Tilkins 2024</Copyright>
 		<Title>Lua.NET</Title>
