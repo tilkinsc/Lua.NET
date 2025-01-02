@@ -71,6 +71,9 @@ public static class Lua
 		public sbyte[] initb;
 	};
 	
+	/// <summary>
+	///  Type for C functions. In order to communicate properly with Lua, a C function must use the following protocol, which defines the way parameters and results are passed: a C function receives its arguments from Lua in its stack in direct order (the first argument is pushed first). So, when the function starts, lua_gettop(L) returns the number of arguments received by the function. The first argument (if any) is at index 1 and its last argument is at index lua_gettop(L). To return values to Lua, a C function just pushes them onto the stack, in direct order (the first result is pushed first), and returns the number of results. Any other value in the stack below the results will be properly discarded by Lua. Like a Lua function, a C function called by Lua can also return many results. 
+	/// </summary>
 	public delegate int lua_CFunction(lua_State L);
 	public delegate int lua_KFunction(lua_State L, int status, lua_KContext ctx);
 	public delegate nint lua_Reader(lua_State L, nuint ud, ref size_t sz);
@@ -183,6 +186,9 @@ public static class Lua
 		return _lua_newstate(f == null ? 0 : Marshal.GetFunctionPointerForDelegate(f), ud);
 	}
 	
+	/// <summary>
+	/// <code> [-0, +0, –] </code> Destroys all objects in the given Lua state (calling the corresponding garbage-collection metamethods, if any) and frees all dynamic memory used by this state. In several platforms, you may not need to call this function, because all resources are naturally released when the host program ends. On the other hand, long-running programs that create multiple states, such as daemons or web servers, will probably need to close states as soon as they are not needed. 
+	/// </summary>
 	[DllImport(DllName, CallingConvention = Convention)]
 	public static extern void lua_close(lua_State L);
 	
@@ -191,6 +197,13 @@ public static class Lua
 	
 	[DllImport(DllName, CallingConvention = Convention, EntryPoint = "lua_atpanic")]
 	private static extern nint _lua_atpanic(lua_State L, nint panicf);
+	
+	/// <summary>
+	/// <code>[-0, +0, –]</code> Sets a new panic function and returns the old one (see §4.6).
+	/// <param name="L">The Lua state.</param>
+	/// <param name="panicf">The new panic function.</param>
+	/// <returns>The old panic function.</returns>
+	/// </summary>
 	public static lua_CFunction? lua_atpanic(lua_State L, lua_CFunction? panicf)
 	{
 		nint panic = _lua_atpanic(L, panicf == null ? 0 : Marshal.GetFunctionPointerForDelegate(panicf));
@@ -210,9 +223,22 @@ public static class Lua
 		return BitConverter.ToDouble(arr, 0);
 	}
 	
+	/// <summary>
+	/// Converts the acceptable index idx into an equivalent absolute index (that is, one that does not depend on the stack top).
+	/// <para>
+	/// [-0, +0, –]
+	/// </para>
+	/// </summary>
 	[DllImport(DllName, CallingConvention = Convention)]
 	public static extern int lua_absindex(lua_State L, int idx);
 	
+	/// <summary>
+	/// 
+	/// <para>
+	/// 
+	/// </para>
+	/// </summary>
+	/// <returns></returns>
 	[DllImport(DllName, CallingConvention = Convention)]
 	public static extern int lua_gettop(lua_State L);
 	
@@ -225,9 +251,15 @@ public static class Lua
 	[DllImport(DllName, CallingConvention = Convention)]
 	public static extern void lua_rotate(lua_State L, int idx, int n);
 	
+	/// <summary>
+	/// <code> [-0, +0, –] </code>  Copies the element at index fromidx into the valid index toidx, replacing the value at that position. Values at other positions are not affected. 
+	/// </summary>
 	[DllImport(DllName, CallingConvention = Convention)]
 	public static extern void lua_copy(lua_State L, int fromidx, int toidx);
 	
+	/// <summary>
+	/// <code> [-0, +0, –] </code>Ensures that the stack has space for at least n extra slots (that is, that you can safely push up to n values into it). It returns false if it cannot fulfill the request, either because it would cause the stack to be larger than a fixed maximum size (typically at least several thousand elements) or because it cannot allocate memory for the extra space. This function never shrinks the stack; if the stack already has space for the extra slots, it is left unchanged. 
+	/// </summary>
 	[DllImport(DllName, CallingConvention = Convention)]
 	public static extern int lua_checkstack(lua_State L, int n);
 	
@@ -310,6 +342,9 @@ public static class Lua
 	public const int LUA_OPUNM = 12;
 	public const int LUA_OPBNOT = 13;
 	
+	/// <summary>
+	/// <code>[-(2|1), +1, e]</code> Performs an arithmetic or bitwise operation over the two values (or one, in the case of negations) at the top of the stack, with the value at the top being the second operand. It pops these values and pushes the result of the operation. The function follows the semantics of the corresponding Lua operator (that is, it may call metamethods).
+	/// </summary>
 	[DllImport(DllName, CallingConvention = Convention)]
 	public static extern void lua_arith(lua_State L, int op);
 	
@@ -320,6 +355,9 @@ public static class Lua
 	[DllImport(DllName, CallingConvention = Convention)]
 	public static extern int lua_rawequal(lua_State L, int idx1, int idx2);
 	
+	/// <summary>
+	/// <code> [-0, +0, e] </code> Compares two Lua values. Returns 1 if the value at index index1 satisfies op when compared with the value at index index2, following the semantics of the corresponding Lua operator (that is, it may call metamethods). Otherwise returns 0. Also returns 0 if any of the indices is not valid. 
+	/// </summary>
 	[DllImport(DllName, CallingConvention = Convention)]
 	public static extern int lua_compare(lua_State L, int idx1, int idx2, int op);
 	
@@ -374,6 +412,9 @@ public static class Lua
 	[DllImport(DllName, CallingConvention = Convention)]
 	public static extern int lua_pushthread(lua_State L);
 	
+	/// <summary>
+	/// <code> [-0, +1, e] </code> Pushes onto the stack the value of the global name. Returns the type of that value. 
+	/// </summary>
 	[DllImport(DllName, CallingConvention = Convention)]
 	public static extern int lua_getglobal(lua_State L, string name);
 	
@@ -383,6 +424,10 @@ public static class Lua
 	[DllImport(DllName, CallingConvention = Convention)]
 	public static extern int lua_getfield(lua_State L, int idx, string k);
 	
+	/// <summary>
+	/// <code> [-0, +1, e] </code> Pushes onto the stack the value t[i], where t is the value at the given index. As in Lua, this function may trigger a metamethod for the "index" event (see <see href="https://www.lua.org/manual/5.3/manual.html#2.4">§2.4</see>).
+	/// Returns the type of the pushed value. 
+	/// </summary>
 	[DllImport(DllName, CallingConvention = Convention)]
 	public static extern int lua_geti(lua_State L, int idx, lua_Integer n);
 	
@@ -395,12 +440,18 @@ public static class Lua
 	[DllImport(DllName, CallingConvention = Convention)]
 	public static extern int lua_rawgetp(lua_State L, int idx, nuint p);
 	
+	/// <summary>
+	/// <code> [-0, +1, m] </code>  Creates a new empty table and pushes it onto the stack. Parameter narr is a hint for how many elements the table will have as a sequence; parameter nrec is a hint for how many other elements the table will have. Lua may use these hints to preallocate memory for the new table. This preallocation is useful for performance when you know in advance how many elements the table will have. Otherwise you can use the function lua_newtable. 
+	/// </summary>
 	[DllImport(DllName, CallingConvention = Convention)]
 	public static extern void lua_createtable(lua_State L, int narr, int nrec);
 	
 	[DllImport(DllName, CallingConvention = Convention)]
 	public static extern nuint lua_newuserdata(lua_State L, size_t sz);
 	
+	/// <summary>
+	/// <code> [-0, +(0|1), –] </code> If the value at the given index has a metatable, the function pushes that metatable onto the stack and returns 1. Otherwise, the function returns 0 and pushes nothing on the stack. 
+	/// </summary>
 	[DllImport(DllName, CallingConvention = Convention)]
 	public static extern int lua_getmetatable(lua_State L, int objindex);
 	
@@ -436,11 +487,20 @@ public static class Lua
 	
 	[DllImport(DllName, CallingConvention = Convention, EntryPoint = "lua_callk")]
 	private static extern void _lua_callk(lua_State L, int nargs, int nresults, nint ctx, nint k);
+	
+	/// <summary>
+	/// <code>[-(nargs + 1), +nresults, e]</code> This function behaves exactly like lua_call, but allows the called function to yield (see <see href="https://www.lua.org/manual/5.3/manual.html#4.7">§4.7</see>). 
+	/// </summary>
 	public static void lua_callk(lua_State L, int nargs, int nresults, lua_KContext? ctx, lua_KFunction? k)
 	{
 		_lua_callk(L, nargs, nresults, ctx == null ? 0 : ctx.Value.Handle, k == null ? 0 : Marshal.GetFunctionPointerForDelegate(k));
 	}
 	
+	/// <summary>
+	/// <code>[-(nargs+1), +nresults, e]</code>
+	/// To call a function you must use the following protocol: first, the function to be called is pushed onto the stack; then, the arguments to the function are pushed in direct order; that is, the first argument is pushed first. Finally you call lua_call; nargs is the number of arguments that you pushed onto the stack. All arguments and the function value are popped from the stack when the function is called. The function results are pushed onto the stack when the function returns. The number of results is adjusted to nresults, unless nresults is LUA_MULTRET. In this case, all results from the function are pushed; Lua takes care that the returned values fit into the stack space, but it does not ensure any extra space in the stack. The function results are pushed onto the stack in direct order (the first result is pushed first), so that after the call the last result is on the top of the stack.
+	/// Any error inside the called function is propagated upwards (with a longjmp).
+	/// </summary>
 	public static void lua_call(lua_State L, int n, int r)
 	{
 		lua_callk(L, n, r, null, null);
@@ -467,6 +527,13 @@ public static class Lua
 	
 	[DllImport(DllName, CallingConvention = Convention, EntryPoint = "lua_dump")]
 	private static extern int _lua_dump(lua_State L, nint writer, nuint data, int strip);
+	
+	/// <summary>
+	/// <code> [-0, +0, –] </code> Dumps a function as a binary chunk. Receives a Lua function on the top of the stack and produces a binary chunk that, if loaded again, results in a function equivalent to the one dumped. As it produces parts of the chunk, lua_dump calls function writer (see lua_Writer) with the given data to write them.
+	/// If strip is true, the binary representation may not include all debug information about the function, to save space.
+	/// The value returned is the error code returned by the last call to the writer; 0 means no errors.
+	/// This function does not pop the Lua function from the stack. 
+	/// </summary>
 	public static int lua_dump(lua_State L, lua_Writer? writer, nuint data, int strip)
 	{
 		return _lua_dump(L, writer == null ? 0 : Marshal.GetFunctionPointerForDelegate(writer), data, strip);
@@ -503,15 +570,24 @@ public static class Lua
 	public const int LUA_GCSETSTEPMUL = 7;
 	public const int LUA_GCISRUNNING = 9;
 	
+	/// <summary>
+	/// <code> [-0, +0, m] </code> Controls the garbage collector. For more details about these options, see <see href="https://www.lua.org/manual/5.3/manual.html#pdf-collectgarbage">collectgarbage</see>.
+	/// </summary>
 	[DllImport(DllName, CallingConvention = Convention)]
 	public static extern int lua_gc(lua_State L, int what, int args);
 	
+	/// <summary>
+	/// <code> [-1, +0, v] </code> Generates a Lua error, using the value at the top of the stack as the error object. This function does a long jump, and therefore never returns (see <see href="https://www.lua.org/manual/5.3/manual.html#luaL_error">luaL_error</see>). 
+	/// </summary>
 	[DllImport(DllName, CallingConvention = Convention)]
 	public static extern int lua_error(lua_State L);
 	
 	[DllImport(DllName, CallingConvention = Convention)]
 	public static extern int lua_next(lua_State L, int idx);
 	
+	/// <summary>
+	/// <code> [-n, +1, e] </code> Concatenates the n values at the top of the stack, pops them, and leaves the result at the top. If n is 1, the result is the single value on the stack (that is, the function does nothing); if n is 0, the result is the empty string. Concatenation is performed following the usual semantics of Lua (see §3.4.6). 
+	/// </summary>
 	[DllImport(DllName, CallingConvention = Convention)]
 	public static extern void lua_concat(lua_State L, int n);
 	
@@ -521,6 +597,9 @@ public static class Lua
 	[DllImport(DllName, CallingConvention = Convention)]
 	public static extern size_t lua_stringtonumber(lua_State L, string s);
 	
+	/// <summary>
+	/// <code> [-0, +0, –] </code> Pushes onto the stack the value t[k], where t is the value at the given index. As in Lua, this function may trigger a metamethod for the "index" event (see <see href="https://www.lua.org/manual/5.3/manual.html#2.4">§2.4</see>). 
+	/// </summary>
 	[DllImport(DllName, CallingConvention = Convention)]
 	public static extern lua_Alloc lua_getallocf(lua_State L, out nuint ud);
 	
@@ -531,6 +610,11 @@ public static class Lua
 		_lua_setallocf(L, f == null ? 0 : Marshal.GetFunctionPointerForDelegate(f), ud);
 	}
 	
+	/// <summary>
+	/// <code> [-0, +0, –] </code> Returns a pointer to a raw memory area associated with the given Lua state. The application can use this area for any purpose; Lua does not use it for anything.
+	/// Each new thread has this area initialized with a copy of the area of the main thread.
+	/// By default, this area has the size of a pointer to void, but you can recompile Lua with a different size for this area. (See LUA_EXTRASPACE in luaconf.h.) 
+	/// </summary>
 	public static nuint lua_getextraspace(lua_State L)
 	{
 		return L.Handle - 8;
