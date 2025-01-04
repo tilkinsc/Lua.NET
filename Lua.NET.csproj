@@ -2,12 +2,12 @@
 	
 	<PropertyGroup>
 		<OutputType>Library</OutputType>
-		<TargetFrameworks>net8.0;net7.0;net6.0</TargetFrameworks>
+		<TargetFrameworks>net9.0;net8.0;net7.0;net6.0</TargetFrameworks>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<Nullable>enable</Nullable>
 		<PackageId>Lua.NET</PackageId>
-		<Version>5.0.3</Version>
+		<Version>6.0.0</Version>
 		<Authors>Cody Tilkins</Authors>
 		<Copyright>Copyright © Cody Tilkins 2024</Copyright>
 		<Title>Lua.NET</Title>
