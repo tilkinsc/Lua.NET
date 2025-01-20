@@ -458,5 +458,6 @@ $RECYCLE.BIN/
 ## Local development
 ##
 lua-all
+lua-all.*
 luajit
 key.txt
