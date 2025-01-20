@@ -47,7 +47,7 @@ If using custom shared libraries, you will need to replace the respective shared
 
 # Examples
 
-Example Usage Lua5.4.6:
+Example Usage Lua5.4:
 ```C#
 // test1.csproj
 // <PropertyGroup>
