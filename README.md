@@ -16,14 +16,34 @@ Hardcoded to only use doubles and 64-bit integers.
 
 The delegates you pass to functions such as `lua_pushcfunction(...)` should be static.
 Otherwise, the lifetime of your functions should exceed the lifetime of the lua_State.
-Do not use lambdas, as C# is liable to GC them.
-A system to support lambdas may be added in the future, but it requires tracking lambda references.
+Do not use non-static lambdas, as C# is liable to GC them.
+You may get away with non-static lambdas if you track their references.
+When you track lambda references they should be cleaned up with the destruction of the lua_State.
+A system to support lambdas may be added in the future.
+
+Acceptable lua_CFunction Pointers:
+```C#
+[UnmanagedCallersOnly]
+public static int lfunc(lua_State L)
+{
+	...
+	return 0;
+}
+...
+lua_pushcfunction(L, lfunc);
+```
+```C#
+lua_pushcfunction(L, static (L) => {
+	...
+	return 0;
+});
+```
 
 # Shared Libraries
 
 No shared library has to be built for this library, as its included for you.
 Custom DLLs are supported when building from source; they must retain ABI compatibility with Lua.
-If using custom shared libraries, you will need to replace the repsective shared library Nuget gives you locally in your project in `bin/{configuration}/{target}/runtimes/{platform-rid}/native`. The name must be the same as the one you are replacing. The ideal way to handle this is by rolling your own nuget package clone of this repository. The reason for this is a shortcoming of runtime dlls not being copied over in project references (as opposed to package reference from nuget). All of this can be avoided if you change the DllName inside the respective source, however, that solution adds complexity to your project. Nuget packages are easy.
+If using custom shared libraries, you will need to replace the respective shared library Nuget gives you locally in your project in `bin/{configuration}/{target}/runtimes/{platform-rid}/native`. The name must be the same as the one you are replacing. The ideal way to handle this is by rolling your own nuget package clone of this repository. The reason for this is a shortcoming of runtime dlls not being copied over in project references (as opposed to package reference from nuget). All of this can be avoided if you change the DllName inside the respective source, however, that solution adds complexity to your project. Nuget packages are easy.
 
 # Examples
 
@@ -42,6 +62,7 @@ namespace TestLua;
 public class Test1
 {
 	
+	[UnmanagedCallersOnly]
 	public static int lfunc(lua_State L)
 	{
 		lua_getglobal(L, "print");
@@ -75,6 +96,7 @@ Example Usage LuaJIT:
 //     ...
 //     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 // </PropertyGroup>
+using System.Runtime.InteropServices;
 using LuaNET.LuaJIT;
 using static LuaNET.LuaJIT.Lua;
 
@@ -83,6 +105,7 @@ namespace TestLua;
 public class Test2
 {
 	
+	[UnmanagedCallersOnly]
 	public static int lfunc(lua_State L)
 	{
 		lua_getglobal(L, "print");
@@ -153,7 +176,8 @@ public unsafe class Test3
 	}
 	
 }
-
+```
+```C#
 // test4.csproj
 // <PropertyGroup>
 //     ...

@@ -21,7 +21,12 @@
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<RepositoryUrl>https://github.com/tilkinsc/Lua.NET</RepositoryUrl> 
 		<RepositoryType>git</RepositoryType>
-		<NoWarn>CS8981</NoWarn>
+		<NoWarn>
+			CS8981, <!-- Only contains lowercase function names -->
+			IDE1006, <!-- Naming rule violation -->
+			CA1401, <!-- P/Invokes should not be visible -->
+			SYSLIB1054 <!-- Use LibraryImportAttribute instead of DllImportAttribute to generate p/invoke marshalling code at compile time -->
+		</NoWarn>
 	</PropertyGroup>
 	
 	<ItemGroup>
