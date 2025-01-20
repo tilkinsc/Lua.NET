@@ -2,20 +2,20 @@
 	
 	<PropertyGroup>
 		<OutputType>Library</OutputType>
-		<TargetFrameworks>net8.0;net7.0;net6.0</TargetFrameworks>
+		<TargetFrameworks>net9.0;net8.0;net7.0;net6.0</TargetFrameworks>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<Nullable>enable</Nullable>
 		<PackageId>Lua.NET</PackageId>
-		<Version>5.0.3</Version>
+		<Version>6.0.1</Version>
 		<Authors>Cody Tilkins</Authors>
-		<Copyright>Copyright © Cody Tilkins 2024</Copyright>
+		<Copyright>Copyright © Cody Tilkins 2025</Copyright>
 		<Title>Lua.NET</Title>
 		<Product>Lua.NET</Product>
 		<PackageIcon>Lua.NET.Logo.png</PackageIcon>
 		<PackageIconUrl>https://raw.githubusercontent.com/tilkinsc/Lua.NET/main/Lua.NET.Logo.png</PackageIconUrl>
 		<PackageTags>Lua LuaJIT</PackageTags>
-		<Description>Lua.NET contains full bindings to Lua5.1.5, Lua5.2.4, Lua5.3.6, Lua.5.4.6 and LuaJIT</Description>
+		<Description>Lua.NET contains full bindings to Lua5.1.5, Lua5.2.4, Lua5.3.6, Lua.5.4.7 and LuaJIT</Description>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>

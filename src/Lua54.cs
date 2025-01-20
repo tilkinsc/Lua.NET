@@ -33,7 +33,7 @@ public struct lua_KContext
 public static class Lua
 {
 	
-	private const string DllName = "lua546";
+	private const string DllName = "lua547";
 	private const CallingConvention Convention = CallingConvention.Cdecl;
 	
 	[StructLayout(LayoutKind.Sequential, Pack = 1, CharSet = CharSet.Ansi)]
@@ -132,14 +132,14 @@ public static class Lua
 	
 	public const string LUA_VERSION_MAJOR = "5";
 	public const string LUA_VERSION_MINOR = "4";
-	public const string LUA_VERSION_RELEASE = "6";
+	public const string LUA_VERSION_RELEASE = "7";
 	
 	public const int LUA_VERSION_NUM = 504;
-	public const int LUA_VERSION_RELEASE_NUM = LUA_VERSION_NUM * 100 + 6;
+	public const int LUA_VERSION_RELEASE_NUM = LUA_VERSION_NUM * 100 + 7;
 	
 	public const string LUA_VERSION = "Lua " + LUA_VERSION_MAJOR + "." + LUA_VERSION_MINOR;
 	public const string LUA_RELEASE = LUA_VERSION + "." + LUA_VERSION_RELEASE;
-	public const string LUA_COPYRIGHT = LUA_RELEASE + "  Copyright (C) 1994-2023 Lua.org, PUC-Rio";
+	public const string LUA_COPYRIGHT = LUA_RELEASE + "  Copyright (C) 1994-2024 Lua.org, PUC-Rio";
 	public const string LUA_AUTHORS = "R. Ierusalimschy, L. H. de Figueiredo, W. Celes";
 	
 	public const string LUA_SIGNATURE = "\x1bLua";

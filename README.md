@@ -1,13 +1,14 @@
 # Lua.NET
-![Logo](https://raw.githubusercontent.com/tilkinsc/Lua.NET/main/Lua.NET.Logo.png)
+[![.NET](https://github.com/tilkinsc/Lua.NET/actions/workflows/dotnet.yml/badge.svg)](https://github.com/tilkinsc/Lua.NET/actions/workflows/dotnet.yml)  
+![Logo](https://raw.githubusercontent.com/tilkinsc/Lua.NET/main/Lua.NET.Logo.png)  
 
 C# .NET Core 8.0
-Lua.NET contains full bindings to Lua5.1.5, Lua5.2.4, Lua5.3.6, Lua.5.4.6 and LuaJIT
+Lua.NET contains full bindings to Lua5.0.3, Lua5.1.5, Lua5.2.4, Lua5.3.6, Lua.5.4.7 and LuaJIT
 
 https://github.com/tilkinsc/Lua.NET  
 Copyright © Cody Tilkins 2024 MIT License  
 
-Supports Lua5.4 Lua5.3 Lua5.2 Lua5.1 and LuaJIT  
+Supports Lua5.4 Lua5.3 Lua5.2 Lua5.1 Lua5.0 and LuaJIT  
 
 Hardcoded to only use doubles and 64-bit integers.  
 
