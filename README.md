@@ -2,7 +2,7 @@
 [![.NET](https://github.com/tilkinsc/Lua.NET/actions/workflows/dotnet.yml/badge.svg)](https://github.com/tilkinsc/Lua.NET/actions/workflows/dotnet.yml)  
 ![Logo](https://raw.githubusercontent.com/tilkinsc/Lua.NET/main/Lua.NET.Logo.png)  
 
-C# .NET Core 8.0
+C# .NET Core 9.0
 Lua.NET contains full bindings to Lua5.0.3, Lua5.1.5, Lua5.2.4, Lua5.3.6, Lua.5.4.7 and LuaJIT
 
 https://github.com/tilkinsc/Lua.NET  
