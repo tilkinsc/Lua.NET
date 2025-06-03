@@ -39,11 +39,11 @@ public static class Lua
 	[StructLayout(LayoutKind.Sequential, Pack = 1, CharSet = CharSet.Ansi)]
 	public struct lua_Debug {
 		public int _event;
-		public string name;
-		public string namewhat;
-		public string what;
-		public string source;
-		public size_t srclen;
+		public nint name;
+		public nint namewhat;
+		public nint what;
+		public nint source;
+		public nint srclen;
 		public int currentline;
 		public int linedefined;
 		public int lastlinedefined;
@@ -447,7 +447,7 @@ public static class Lua
 	
 	[DllImport(DllName, CallingConvention = Convention, EntryPoint = "lua_pcallk")]
 	private static extern int _lua_pcallk(lua_State L, int nargs, int nresults, int errfunc, nint ctx, nint k);
-	public static int lua_pcallk(lua_State L, int nargs, int nresults, int errfunc, lua_KContext? ctx, lua_KFunction? k)
+	public static unsafe int lua_pcallk(lua_State L, int nargs, int nresults, int errfunc, lua_KContext? ctx, lua_KFunction? k)
 	{
 		return _lua_pcallk(L, nargs, nresults, errfunc, ctx == null ? 0 : ctx.Value.Handle, k == null ? 0 : Marshal.GetFunctionPointerForDelegate(k));
 	}
@@ -730,7 +730,7 @@ public static class Lua
 	
 	[DllImport(DllName, CallingConvention = Convention, EntryPoint = "lua_sethook")]
 	private static extern void _lua_sethook(lua_State L, nint func, int mask, int count);
-	public static void lua_sethook(lua_State L, lua_Hook? func, int mask, int count)
+	public static void lua_sethook(lua_State L, lua_Hook func, int mask, int count)
 	{
 		_lua_sethook(L, func == null ? 0 : Marshal.GetFunctionPointerForDelegate(func), mask, count);
 	}
