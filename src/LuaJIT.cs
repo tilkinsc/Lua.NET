@@ -66,7 +66,7 @@ public static class Lua
 	public delegate nuint lua_Alloc(nuint ud, nuint ptr, size_t osize, size_t nsize);
 	public delegate void lua_Hook(lua_State L, lua_Debug ar);
 	
-	public static unsafe luaL_Reg AsLuaLReg(string name, delegate*unmanaged<lua_State, int> func) => new() { name  = name, func = (nint) func };
+	public static unsafe luaL_Reg AsLuaLReg(string name, delegate*unmanaged<lua_State, int> func) => new() { name = name, func = (nint) func };
 	
 	public const string LUAJIT_VERSION = "LuaJIT 2.1.0-beta3";
 	public const int LUAJIT_VERSION_NUM = 20100;
@@ -562,10 +562,10 @@ public static class Lua
 	public const int LUA_MASKCOUNT = 1 << LUA_HOOKCOUNT;
 	
 	[DllImport(DllName, CallingConvention = Convention)]
-	public static extern int lua_getstack(lua_State L, int level, lua_Debug ar);
+	public static extern int lua_getstack(lua_State L, int level, ref lua_Debug ar);
 	
 	[DllImport(DllName, CallingConvention = Convention)]
-	public static extern int lua_getinfo(lua_State L, string what, lua_Debug ar);
+	public static extern int lua_getinfo(lua_State L, string what, ref lua_Debug ar);
 	
 	[DllImport(DllName, CallingConvention = Convention, EntryPoint = "lua_getlocal")]
 	private static extern nint _lua_getlocal(lua_State L, lua_Debug ar, int n);
@@ -657,10 +657,10 @@ public static class Lua
 	public const int LUA_ERRFILE = LUA_ERRERR + 1;
 	
 	[DllImport(DllName, CallingConvention = Convention)]
-	public static extern void luaL_openlib(lua_State L, string libname, luaL_Reg l, int nup);
-	
+	public static extern void luaL_openlib(lua_State L, string libname, luaL_Reg[] l, int nup);
+
 	[DllImport(DllName, CallingConvention = Convention)]
-	public static extern void luaL_register(lua_State L, string libname, luaL_Reg l);
+	public static extern void luaL_register(lua_State L, string libname, luaL_Reg[] l);
 	
 	[DllImport(DllName, CallingConvention = Convention)]
 	public static extern int luaL_getmetafield(lua_State L, int obj, string e);

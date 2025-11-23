@@ -602,10 +602,10 @@ public static class Lua
 	public const int LUA_ERRFILE = LUA_ERRERR + 1;
 	
 	[DllImport(DllName, CallingConvention = Convention)]
-	public static extern void luaL_openlib(lua_State L, string libname, luaL_Reg l, int nup);
+	public static extern void luaL_openlib(lua_State L, string libname, luaL_Reg[] l, int nup);
 	
 	[DllImport(DllName, CallingConvention = Convention)]
-	public static extern void luaL_register(lua_State L, string libname, luaL_Reg l);
+	public static extern void luaL_register(lua_State L, string libname, luaL_Reg[] l);
 	
 	[DllImport(DllName, CallingConvention = Convention)]
 	public static extern int luaL_getmetafield(lua_State L, int obj, string e);
